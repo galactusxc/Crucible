@@ -885,4 +885,285 @@ try{render();tick()}catch(e){console.error('App startup render failed',e);toast(
 setInterval(()=>{try{tick()}catch(e){console.error(e)}},1000);
 if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud render failed',e)}});try{cloud.channel('league-state-live').on('postgres_changes',{event:'UPDATE',schema:'public',table:'league_state',filter:'id=eq.1'},payload=>{if(payload?.new?.data){let msgs=state.messages;state={...state,...payload.new.data,messages:msgs};seedState();try{render()}catch(e){console.error('Realtime render failed',e)}}}).subscribe()}catch(e){console.warn('Realtime subscription unavailable',e)}}
 
-</script></body></html>
+</script>
+
+<!-- WICTORz targeted extension v2.16: additive overrides; original tournament modules retained -->
+<style>
+/* v2.16 additions */
+.top-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:92px;padding:4px 9px;border:1px solid #ffffff28;border-radius:10px;background:#ffffff0c;color:#fff;font:800 14px Inter,monospace;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.top-clock small{font:500 9px 'IBM Plex Sans Thai';color:#d4cede;letter-spacing:0}
+.notifybtn{font-size:0}.notifybtn:before{content:'♟';font-size:0}.notifybtn .bell-svg{width:20px;height:20px;display:block}.notifybtn.is-empty .bell-svg{color:#a7a7b2}.notifybtn.has-alert .bell-svg{color:#f0bd99}.notifybtn .notifycount{display:flex;background:#b94350}.notifybtn.is-empty .notifycount{background:#777782;color:#fff}
+#adminDrawerAction{display:flex!important}.isadmin #adminDrawerAction{display:flex!important}
+#adminDrawerAction.active{background:#fff3e9;color:#754d34}
+#honors .honor-man{margin-left:auto;text-align:right;font-size:10px;color:#8b603e;font-weight:750;white-space:nowrap}
+.honor-teamline{width:100%}
+.honor-season .honor-teamline{display:flex;align-items:center}
+.foot-icons img{width:min(240px,42vw)!important;max-width:240px!important;height:auto!important;max-height:none!important;aspect-ratio:3/1;object-fit:contain;border-radius:6px;padding:0!important;background:transparent!important}
+.menu-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:13px 0}
+.menu-tile{border:1px solid #e7e5ed;border-radius:12px;overflow:hidden;background:#faf9fb;cursor:pointer;min-width:0;transition:.18s}
+.menu-tile:hover{transform:translateY(-2px);box-shadow:0 7px 18px #22213a14}
+.menu-tile img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover}
+.menu-tile span{display:block;padding:7px 4px;text-align:center;font-size:10px;font-weight:700;color:#343249}
+#photoBookingModal .modal{max-width:520px}
+.fee-paid{background:#e8f7ee!important;outline:2px solid #31a66a;outline-offset:-2px;border-radius:8px;color:#17683c}
+.fee-unpaid{background:#fff0f0!important;outline:2px solid #d94b55;outline-offset:-2px;border-radius:8px;color:#9b2832}
+.fee-cell{padding:8px 10px!important}
+.fee-cell input{max-width:82px}
+.admin-panel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.admin-stat{border:1px solid #e7e5ed;border-radius:12px;padding:12px;background:#faf9fc}
+.admin-stat b{display:block;font:800 22px Inter;color:#8b603e}
+.admin-message{border:1px solid #e7e5ed;border-radius:12px;padding:12px;margin:9px 0;background:#fff}
+.admin-message-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.admin-message small{color:#777487}
+.admin-message pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.7 inherit;margin:8px 0}
+.tactic-preset-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.tactic-preset{border:1px solid #e5e3eb;border-radius:10px;background:#f7f6f9;color:#343249;padding:9px;text-align:left;font-size:11px;font-weight:700}
+.tactic-preset.active{background:#373653;color:#fff;border-color:#373653}
+.tactic-strategy{border:1px solid #e7e5ed;border-radius:14px;padding:14px;margin-top:14px}
+.tactic-range-row{display:grid;grid-template-columns:minmax(80px,1fr) minmax(100px,2fr) minmax(80px,1fr);gap:9px;align-items:center;padding:9px 0;border-bottom:1px solid #eeeef2}
+.tactic-range-row:last-child{border-bottom:0}
+.tactic-range-row input{width:100%;direction:rtl;accent-color:#6d5cae}
+.tactic-range-row .right-label{text-align:right}
+.tactic-range-row .mid{font:800 11px Inter;text-align:center;color:#6d5cae}
+.tactic-range-row .left-label,.tactic-range-row .right-label{font-size:10px;color:#5d5b70}
+#strategyPanel{margin-top:14px}
+.booking-option{border:1px solid #e6e4ec;border-radius:10px;padding:9px;margin:7px 0;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.booking-option input{width:auto}
+@media(max-width:700px){.top-clock{min-width:72px;padding:3px 5px;font-size:11px}.top-clock small{font-size:8px}.menu-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.admin-panel-grid{grid-template-columns:1fr}.tactic-range-row{grid-template-columns:minmax(65px,1fr) minmax(80px,1.5fr) minmax(65px,1fr);gap:5px}.tactic-range-row .left-label,.tactic-range-row .right-label{font-size:9px}.honor-season .honor-man{font-size:9px}}
+</style>
+<script>
+/* Additive interface layer. Existing app state and original handlers remain the source of truth. */
+(function(){
+  const $=id=>document.getElementById(id);
+  const safe=(v)=>typeof esc==='function'?esc(v):String(v??'');
+  const add=(parent,html)=>{if(parent)parent.insertAdjacentHTML('beforeend',html)};
+  const oldRender=render;
+
+  // Header clock, accessible bell state and Admin entry in drawer only.
+  const top=document.querySelector('.top');
+  const adminTop=top?.querySelector('button[aria-label="ผู้ดูแล"]');
+  if(adminTop)adminTop.remove();
+  const clock=document.createElement('div');clock.id='platformClock';clock.className='top-clock';clock.innerHTML='<span id="clockTime">00:00:00</span><small id="clockDate">เวลาไทย · ICT</small>';
+  const bell=document.querySelector('.notifybtn');
+  if(bell){bell.innerHTML='<svg class="bell-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="notifyCount" class="notifycount">0</span>';bell.setAttribute('aria-label','การแจ้งเตือน');}
+  if(top&&bell)top.insertBefore(clock,bell);
+  const drawer=document.querySelector('.drawer');
+  if(drawer&&!$('adminDrawerAction'))drawer.insertAdjacentHTML('beforeend','<button id="adminDrawerAction" class="navitem" onclick="adminAction()">⚙ <span>Admin Mode / จัดการระบบ</span></button>');
+  function clockTick(){const d=new Date();const t=$('clockTime'),dt=$('clockDate');if(t)t.textContent=new Intl.DateTimeFormat('th-TH',{timeZone:'Asia/Bangkok',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(d);if(dt)dt.textContent=new Intl.DateTimeFormat('th-TH',{timeZone:'Asia/Bangkok',weekday:'short',day:'numeric',month:'short'}).format(d)+' · ICT'}
+  clockTick();setInterval(clockTick,1000);
+
+  // Expand notification count to include new inbox items and unread state.
+  const oldCount=renderNotificationCount;
+  renderNotificationCount=function(){
+    const el=$('notifyCount'),b=document.querySelector('.notifybtn');if(!el||!b)return;
+    let n=(typeof visibleNotifications==='function'?visibleNotifications().length:0);
+    if(isAdmin)n+=((state.messages||[]).filter(m=>!m.read).length);
+    el.textContent=String(n);el.classList.toggle('on',n>0);b.classList.toggle('is-empty',n===0);b.classList.toggle('has-alert',n>0);
+  };
+  const oldAdminAction=adminAction;
+  adminAction=function(){if(!isAdmin)return oldAdminAction();go('inbox');document.querySelector('.drawerbg')?.classList.remove('open');};
+  const oldGo=go;
+  go=function(id){oldGo(id);if(id==='inbox'&&isAdmin)markAdminInboxSeen();};
+  function markAdminInboxSeen(){(state.messages||[]).forEach(m=>m.read=true);try{localStorage.setItem('crucible3-state',JSON.stringify(state))}catch{}renderNotificationCount()}
+  const oldInbox=renderInbox;
+  renderInbox=function(){
+    const locked=$('inboxLocked');if(locked)locked.style.display=isAdmin?'none':'block';
+    const list=$('inboxList');if(!list)return;
+    if(!isAdmin){list.innerHTML='';return}
+    const messages=state.messages||[];
+    const unread=messages.filter(m=>!m.read).length;
+    const categories=[...new Set(messages.map(m=>m.type||'ข้อความทั่วไป'))];
+    list.innerHTML=`<div class="admin-panel-grid"><div class="admin-stat"><small>ข้อความทั้งหมด</small><b>${messages.length}</b></div><div class="admin-stat"><small>ยังไม่อ่าน</small><b>${unread}</b></div></div>
+      <div class="actions" style="margin:12px 0"><button class="btn sm" onclick="filterAdminMessages('ทั้งหมด')">ทั้งหมด</button>${categories.map(c=>`<button class="btn sm" onclick="filterAdminMessages('${safe(c)}')">${safe(c)}</button>`).join('')}<button class="btn sm" onclick="refreshAdminInbox()">↻ รีเฟรชกล่องข้อความ</button></div>
+      <div id="adminMessageList">${messages.length?messages.map((m,i)=>adminMessageHTML(m,i)).join(''):'<div class="empty">ยังไม่มีข้อความเข้าส่วนตัว Admin</div>'}</div>
+      <section class="admin-panel-grid sectiongap">
+       <div class="admin-stat"><small>คำสั่งซื้อเสื้อ MONER</small><b>${messages.filter(m=>(m.type||'').includes('MONER')).length}</b></div>
+       <div class="admin-stat"><small>เครื่องดื่มและอุปกรณ์</small><b>${messages.filter(m=>(m.type||'').includes('เครื่องดื่ม')).length}</b></div>
+       <div class="admin-stat"><small>แจ้งชำระเงิน / ติดต่อ</small><b>${messages.filter(m=>(m.type||'').includes('ชำระเงิน')||(m.type||'').includes('ติดต่อ')).length}</b></div>
+       <div class="admin-stat"><small>คำขอจองสนาม</small><b>${messages.filter(m=>(m.type||'').includes('จองสนาม')).length}</b></div>
+      </section>`;
+  };
+  function adminMessageHTML(m,i){return `<article class="admin-message"><div class="admin-message-head"><div><b>${safe(m.type||'ข้อความ')}</b> ${m.read?'':'<span class="pill" style="color:#b93443">ใหม่</span>'}<div><b>${safe(m.name||'ไม่ระบุ')}</b> <small>· ${safe(m.time||'')}</small></div></div><div class="actions"><button class="btn sm" onclick="markOneMessageRead(${i})">อ่านแล้ว</button><button class="btn sm" onclick="deleteMessage(${i})">ลบ</button></div></div><pre>${safe(m.text||'')}</pre></article>`}
+  window.adminMessageHTML=adminMessageHTML;
+  window.filterAdminMessages=function(type){const el=$('adminMessageList');if(!el)return;let arr=(state.messages||[]).map((m,i)=>({m,i})).filter(x=>type==='ทั้งหมด'||x.m.type===type);el.innerHTML=arr.length?arr.map(x=>adminMessageHTML(x.m,x.i)).join(''):'<div class="empty">ไม่พบข้อความในหมวดนี้</div>'};
+  window.markOneMessageRead=function(i){if(state.messages?.[i])state.messages[i].read=true;try{localStorage.setItem('crucible3-state',JSON.stringify(state))}catch{}renderInbox();renderNotificationCount()};
+  window.refreshAdminInbox=async function(){if(cloud&&isAdmin){await loadCloud()}else renderInbox();toast('รีเฟรชกล่องข้อความแล้ว')};
+
+  // Contact/payment: keep the original contact form and add the QR submission details beneath it.
+  const contact=$('contact');
+  if(contact&&!$('paymentDetailsExtra')){
+    const card=contact.querySelector('.card');
+    add(card,`<div id="paymentDetailsExtra" class="sectiongap"><div class="divider"></div><h2>รายละเอียดแจ้งชำระเงิน</h2><div class="field"><label>ธนาคาร / ชื่อบัญชี / เลขบัญชี 4 ตัวท้าย</label><input id="payAccountInfo" class="control" placeholder="เช่น ธนาคาร... · ชื่อบัญชี... · xxxx1234"></div><div class="twocol"><div class="field"><label>วันที่โอน</label><input id="payDate" class="control" type="date"></div><div class="field"><label>เวลาโอนโดยประมาณ</label><input id="payTime" class="control" type="time"></div></div><p class="foot">ข้อมูลนี้จะถูกรวมส่งเข้ากล่องข้อความ Admin เพื่อให้ตรวจสอบยอดชำระ</p><button class="btn primary" onclick="submitPaymentDetails()">ส่งรายละเอียดการชำระเงิน</button></div>`);
+  }
+  window.submitPaymentDetails=async function(){
+    const name=$('contactName')?.value.trim()||'ไม่ระบุ',account=$('payAccountInfo')?.value.trim(),date=$('payDate')?.value,time=$('payTime')?.value;
+    if(!account||!date||!time)return toast('กรอกธนาคาร ชื่อบัญชี เลข 4 ตัวท้าย วันที่และเวลาโอนให้ครบ');
+    const ok=await submitMessage('แจ้งชำระเงิน',name,`ข้อมูลบัญชี: ${account}\nวันที่โอน: ${date}\nเวลาโดยประมาณ: ${time}\nรายละเอียดเพิ่มเติม: ${$('contactText')?.value||''}`);
+    if(ok){$('payAccountInfo').value='';$('payDate').value='';$('payTime').value='';}
+  };
+
+  // Fees: Week 3, with explicit paid/unpaid state independent of amount.
+  const oldFees=renderFees;
+  renderFees=function(){
+    const el=$('feesTable');if(!el)return;
+    const weeks=[1,2,3];
+    const head='<thead><tr><th>ทีม</th><th>สัปดาห์ที่ 1</th><th>สัปดาห์ที่ 2</th><th>สัปดาห์ที่ 3</th><th>ยอดรวมค้าง</th></tr></thead>';
+    const rows=state.teams.map(t=>{
+      let total=0,cells=weeks.map(w=>{
+        const key=t.id+'-'+w,amount=Number(state.fees[key]||0),paid=!!(state.feeStatus&&state.feeStatus[key]);total+=paid?0:amount;
+        return `<td class="fee-cell ${paid?'fee-paid':'fee-unpaid'}">${isAdmin?`<div><input class="control" type="number" min="0" value="${amount}" aria-label="ยอดค่าสนาม ${safe(t.name)} สัปดาห์ ${w}" onchange="setFeeAmount('${t.id}',${w},this.value)"><label style="display:flex;gap:5px;align-items:center;margin-top:6px;font-size:10px"><input type="checkbox" ${paid?'checked':''} onchange="setFeePaid('${t.id}',${w},this.checked)"> จ่ายแล้ว</label></div>`:`฿${amount} · ${paid?'จ่ายแล้ว':'ค้างชำระ'}`}</td>`;
+      }).join('');
+      return `<tr><td>${safe(t.name)}</td>${cells}<td><b>฿${total.toLocaleString('th-TH')}</b></td></tr>`;
+    }).join('');
+    el.innerHTML=head+'<tbody>'+rows+'</tbody>';
+  };
+  window.setFeeAmount=function(team,w,v){if(!isAdmin)return;state.fees=state.fees||{};state.fees[team+'-'+w]=Math.max(0,Number(v)||0);save()};
+  window.setFeePaid=function(team,w,on){if(!isAdmin)return;state.feeStatus=state.feeStatus||{};state.feeStatus[team+'-'+w]=!!on;save();};
+  const oldSeed=seedState;
+  seedState=function(){oldSeed();state.feeStatus=state.feeStatus||{};state.fees=state.fees||{};state.strategyValues=Array.isArray(state.strategyValues)?state.strategyValues:Array(TACTIC_FIELDS.length).fill(50);state.strategyPreset=state.strategyPreset||'';state.bookings=state.bookings||[];};
+
+  // Mengbo menu tiles. Files are referenced from the same images/ folder as the source app.
+  const mengbo=$('home')?.querySelector('.card.s6:has(#menuAnnouncement)');
+  if(mengbo&&!$('mengboTiles')){
+    const status=$('photoStateText')?.parentElement;
+    const tiles=document.createElement('div');tiles.id='mengboTiles';tiles.className='menu-tiles';
+    tiles.innerHTML=[
+      ['menubox1.webp','Facebook','openMengboLink(1)'],
+      ['menubox2.webp','แจ้งชำระเงิน','openMengboLink(2)'],
+      ['menubox3.webp','แผนที่สนาม','openMengboLink(3)'],
+      ['menubox4.webp','ข่าวสารลีก','openMengboLink(4)'],
+      ['menubox5.webp','จองสนาม','openMengboLink(5)']
+    ].map(([img,label,fn])=>`<button class="menu-tile" onclick="${fn}" aria-label="${label}"><img src="images/${img}" alt="${label}"><span>${label}</span></button>`).join('');
+    if(status)status.insertAdjacentElement('afterend',tiles);else mengbo.appendChild(tiles);
+  }
+  window.openMengboLink=function(n){
+    const fb='https://www.facebook.com/profile.php?id=100090974629841',map='https://maps.app.goo.gl/1pWY6EuHEYenq5QG9';
+    if(n===1||n===4){window.open(fb,'_blank','noopener');return}
+    if(n===3){window.open(map,'_blank','noopener');return}
+    if(n===2){openModal(`<h2>▦ แจ้งชำระเงิน</h2><div class="poster-frame" style="background:#fff;padding:10px"><img src="images/qrcodepay.webp" alt="QR สำหรับชำระเงิน" style="max-width:260px;max-height:260px"></div><div class="field"><label>ชื่อบัญชี / เลข 4 ตัวท้ายบัญชี / ธนาคาร</label><input id="miniPayAccount" class="control" placeholder="ชื่อบัญชี · xxxx1234 · ธนาคาร"></div><div class="twocol"><div class="field"><label>วันที่โอน</label><input id="miniPayDate" class="control" type="date"></div><div class="field"><label>เวลาโดยประมาณ</label><input id="miniPayTime" class="control" type="time"></div></div><div class="actions"><button class="btn primary" onclick="submitMiniPayment()">ส่ง</button><button class="btn" onclick="closeModal()">ปิดหน้าต่าง</button></div>`);return}
+    if(n===5){openBookingModal()}
+  };
+  window.submitMiniPayment=async function(){const account=$('miniPayAccount')?.value.trim(),date=$('miniPayDate')?.value,time=$('miniPayTime')?.value;if(!account||!date||!time)return toast('กรอกข้อมูลการโอนให้ครบ');const ok=await submitMessage('แจ้งชำระเงิน',account,`วันที่โอน ${date}\nเวลาโดยประมาณ ${time}`);if(ok)closeModal()};
+  window.openBookingModal=function(){
+    openModal(`<h2>⚽ จองสนามเตะสาธิตวันปกติ</h2><div class="poster-frame"><img src="images/satit.jpg" alt="สนามฟุตบอลสาธิต มช."></div><p class="foot">วันพุธ (4 ทีม) · ศุกร์ (5 ทีม) · เสาร์ (5 ทีม) · อาทิตย์ (5 ทีม)</p><p>ศุกร์ / เสาร์ / อาทิตย์ ทีมละ 449฿ (คนละ 64฿) · วัยทำงาน/คนนอก 490฿</p><p>พุธ ทีมละ 475฿ (คนละ 68฿) · วัยทำงาน/คนนอก 520฿</p><div class="field"><label>เลือกวันที่จองเตะ</label><select id="bookingDay" class="control"><option value="พุธ 19.00-21.50น.">พุธ 19.00–21.50 น.</option><option value="ศุกร์ 19.00-21.50น.">ศุกร์ 19.00–21.50 น.</option><option value="เสาร์ 18.30-21.30น.">เสาร์ 18.30–21.30 น.</option><option value="อาทิตย์ 18.30-21.30น.">อาทิตย์ 18.30–21.30 น.</option></select></div><div class="field"><label>ชื่อผู้จอง</label><input id="bookingName" class="control"></div><div class="field"><label>เบอร์โทร</label><input id="bookingPhone" class="control" type="tel"></div><div class="actions"><button class="btn primary" onclick="confirmBooking()">จอง</button><button class="btn" onclick="closeModal()">ยกเลิก</button></div>`);
+  };
+  window.confirmBooking=async function(){const name=$('bookingName')?.value.trim(),phone=$('bookingPhone')?.value.trim(),day=$('bookingDay')?.value;if(!name||!phone)return toast('กรอกชื่อและเบอร์โทร');const ok=await submitMessage('จองสนาม',name,`${day}\nเบอร์โทร: ${phone}`);if(ok){closeModal();openModal(`<h2>ยืนยันการจอง</h2><p>${safe(name)} · ${safe(day)}</p><p>ส่งคำขอจองให้ผู้จัดแล้ว กรุณารอการยืนยัน</p><button class="btn primary" onclick="closeModal()">ปิด</button>`) }};
+
+  // Strategy sliders + preset buttons on home, beneath tactical board.
+  const tacticCard=$('home')?.querySelector('.tactic-card');
+  if(tacticCard&&!$('strategyPanel')){
+    const panel=document.createElement('section');panel.id='strategyPanel';panel.className='card s12 tactic-strategy';
+    tacticCard.insertAdjacentElement('afterend',panel);
+  }
+  const PRESETS=[
+    {key:'gegenpressing',name:'1. เกเกนเพรสซิ่ง',v:[25,20,85,30,45,25,60,75,5,35,0,80,55,20,65,5,25,15,65,5,30,75,35,25]},
+    {key:'tiki_taka',name:'2. ตากิ-ตาก้า',v:[45,25,65,5,5,0,90,35,55,40,35,75,65,35,85,45,50,45,80,50,30,85,30,65]},
+    {key:'brighton_build_up',name:'3. ไบร์ทตัน เพลสซิ่ง & บิวต์อัพ',v:[40,45,55,15,20,15,85,70,45,70,40,65,60,55,95,40,55,45,75,45,35,85,75,60]},
+    {key:'arteta_possession',name:'4. อาร์เตต้า-ครองบอล',v:[15,20,60,15,15,10,75,15,70,75,10,85,20,35,80,35,15,10,35,15,35,90,45,55]},
+    {key:'catenaccio',name:'5. รถบัสรับ & สวน',v:[5,15,5,75,80,85,45,20,40,15,85,5,10,85,15,65,20,30,45,20,25,80,55,45]},
+    {key:'boring_football',name:'6. Boring Football (บอลเน้นผล)',v:[0,15,15,65,75,70,25,5,85,20,75,15,15,80,15,95,35,55,15,35,35,75,55,45]},
+    {key:'arsenal_set_piece',name:'7. อาร์เซน่อลเซ็ตพีซ',v:[15,25,45,35,45,30,15,30,35,65,35,55,40,45,50,40,45,35,5,25,25,70,35,35]},
+    {key:'direct',name:'8. ไดเรคบอลน้อยจังหวะ & เข้าทำไว',v:[30,30,75,85,95,75,35,80,0,65,40,60,50,35,10,25,50,40,60,25,35,45,45,15]},
+    {key:'wide_attack',name:'9. บอลเน้นเกมจากริมเส้น',v:[65,35,75,35,40,20,55,75,15,95,35,65,85,30,65,25,50,45,60,35,5,20,10,35]},
+    {key:'wenger',name:'10. บอลสวยงาม & บุก & ความสามารถเฉพาะตัว',v:[75,30,85,15,25,15,85,75,20,65,55,70,85,40,75,25,75,55,75,55,20,35,25,65]}
+  ];
+  window.applyTacticPreset=function(key){const p=PRESETS.find(x=>x.key===key);if(!p)return;state.strategyValues=[...p.v];state.strategyPreset=key;save();renderStrategy();toast('ใช้แผน '+p.name.replace(/^\d+\.\s*/, '')+' แล้ว')};
+  window.updateStrategyValue=function(i,v){state.strategyValues=state.strategyValues||Array(TACTIC_FIELDS.length).fill(50);state.strategyValues[i]=Number(v);state.strategyPreset='';const out=$('strategyValue'+i);if(out)out.textContent=v+'%';try{localStorage.setItem('crucible3-state',JSON.stringify(state))}catch{}};
+  function renderStrategy(){
+    const el=$('strategyPanel');if(!el)return;
+    const values=state.strategyValues||Array(TACTIC_FIELDS.length).fill(50);
+    el.innerHTML=`<div class="cardhead"><div><h2>🎯 แผนการเล่น / กลยุทธ์</h2><p class="foot">ปรับแนวทางทีมด้วยแถบเลื่อน 0–100% · ตรงกลาง 50% คือสมดุล</p></div><span class="pill">USER STRATEGY</span></div><div class="tactic-preset-grid">${PRESETS.map(p=>`<button class="tactic-preset ${state.strategyPreset===p.key?'active':''}" onclick="applyTacticPreset('${p.key}')">${safe(p.name)}</button>`).join('')}</div><div class="foot">ด้านซ้ายคือแนวทางแรก · ด้านขวาคือแนวทางที่สอง · 50% คือค่ากลาง</div><div>${TACTIC_FIELDS.map((f,i)=>{const v=Number(values[i]??50),left=v<50?Math.round((50-v)*2):0,right=v>50?Math.round((v-50)*2):0;return `<div class="tactic-range-row"><span class="left-label">${safe(f[1])}</span><div><div class="mid" id="strategyValue${i}">${v}%</div><input type="range" min="0" max="100" step="1" value="${v}" oninput="updateStrategyValue(${i},this.value)" style="background:linear-gradient(to left,#6d5cae 0%,#6d5cae ${right/2}%,#fff ${Math.max(0,50-Math.abs(v-50))}%,#fff ${Math.min(100,50+Math.abs(v-50))}%,#d17a3d ${100-left/2}%,#d17a3d 100%)"></div><span class="right-label">${safe(f[2])}</span></div>`}).join('')}</div><div class="actions" style="margin-top:12px"><button class="btn" onclick="resetStrategy()">รีเซ็ต 50%</button><button class="btn primary" onclick="saveStrategy()">บันทึกแผนการเล่น</button></div>`;
+  }
+  window.resetStrategy=function(){state.strategyValues=Array(TACTIC_FIELDS.length).fill(50);state.strategyPreset='';save();renderStrategy()};
+  window.saveStrategy=function(){save();if(cloud&&isAdmin){saveCloud().then(()=>toast('บันทึกกลยุทธ์ใน Supabase แล้ว')).catch(()=>toast('บันทึกออนไลน์ไม่สำเร็จ'))}else toast('บันทึกกลยุทธ์ไว้ในอุปกรณ์นี้แล้ว · ต้องเข้าสู่ Admin เพื่อซิงก์ข้อมูลกลาง')};
+
+  // Honors: exact podium labels and trophy-man annotations requested.
+  const originalRenderHonors=renderHonors;
+  renderHonors=function(){
+    const banner=$('honorBanner'),list=$('honorsList');if(!list)return;
+    if(banner){banner.innerHTML=state.honorBanner?`<img src="${state.honorBanner}" alt="ประกาศเกียรติยศทีม">`:'';banner.parentElement.style.display=state.honorBanner?'':'none'}
+    const seasons=[
+      {season:'Season 0 (2026) 🏆',winner:'แจกแต้ม x เด็กสานฝัน (ครั้งที่ 1)',logo:'https://galactusxc.github.io/Crucible/images/jakt.webp',id:'c2'},
+      {season:'Season 1 (2026) 🏆',winner:'Full of Problems',logo:'https://galactusxc.github.io/Crucible/images/fop.webp',id:'c6',man:'Man of the Trophy : 10.CHINNAWAT',runner:'GANGKUI',third:'อุเทน'},
+      {season:'Season 2 (2026) 🏆',winner:'แจกแต้ม x เด็กสานฝัน (ครั้งที่ 2)',logo:'https://galactusxc.github.io/Crucible/images/jakt.webp',id:'c2',man:'Man of the Trophy : 99.PATTER',runner:'สามทุ่ม',third:'PAREDES'}
+    ];
+    list.innerHTML=seasons.map(x=>`<article class="honor-season"><b>${safe(x.season)}</b><div class="muted" style="margin-top:5px">CHAMPIONS - Winner</div><div class="honor-teamline"><img src="${x.logo}" alt="โลโก้ทีมแชมป์"><span class="teamlink-name" onclick="openTeamPublic('${x.id}')">${safe(x.winner)}</span>${x.man?`<span class="honor-man">${safe(x.man)}</span>`:''}</div>${x.runner?`<p style="margin:9px 0 0">🥈 รองแชมป์: <b>${safe(x.runner)}</b></p>`:''}${x.third?`<p style="margin:3px 0 0">🥉 (3rd): <b>${safe(x.third)}</b></p>`:''}</article>`).join('')+(isAdmin?(state.honors||[]).slice(3).map((h,i)=>`<article class="honor-season"><b>${safe(h.season)}</b><div>${safe(h.award||'')}</div>${safe(h.team)} <button class="btn sm" onclick="deleteHonor(${i+3})">ลบ</button></article>`).join(''):'');
+  };
+
+  // Supabase: preserve messages in local payload; league_state remains canonical for whole app.
+  const originalSaveCloud=saveCloud;
+  saveCloud=async function(){
+    if(!cloud||!isAdmin)return;
+    const pub={...state};delete pub.messages;
+    const {error}=await cloud.from('league_state').upsert({id:1,data:pub,updated_at:new Date().toISOString()},{onConflict:'id'});
+    if(error)throw error;
+  };
+  // Reload server inbox in real time and keep state fields intact.
+  if(cloud){
+    try{
+      cloud.channel('league-inbox-live').on('postgres_changes',{event:'*',schema:'public',table:'league_inbox'},async()=>{if(isAdmin){await loadCloud();renderInbox();renderNotificationCount()}}).subscribe();
+    }catch(e){console.warn('Inbox realtime unavailable',e)}
+  }
+
+  const originalRender=render;
+  render=function(){originalRender();renderStrategy();const action=$('adminDrawerAction');if(action)action.classList.toggle('active',isAdmin);};
+  // First paint after all overrides are installed.
+  try{render();renderNotificationCount()}catch(e){console.error('v2.16 extension render',e)}
+})();
+</script>
+
+
+<script>
+(function(){
+ const $=id=>document.getElementById(id),safe=s=>typeof esc==='function'?esc(s):String(s??'');
+ // Make match events the authoritative source for live scorer and assist rankings.
+ function eventTotals(){
+   const goals=new Map(),assists=new Map();
+   Object.entries(state.matchEvents||{}).forEach(([idx,events])=>{
+     const match=schedule()[Number(idx)];if(!match)return;
+     (events||[]).forEach(e=>{
+       const name=(e.name||'').trim();if(!name)return;
+       const team=e.team==='away'||e.team===match.b?match.b:match.a;
+       if(['goal','penalty','free_kick'].includes(e.type)){
+         const key=name.toLocaleLowerCase('th-TH')+'|'+team,old=goals.get(key)||{name,team,goals:0};
+         old.goals+=Math.max(1,Math.min(20,Number(e.count)||1));goals.set(key,old);
+       }else if(e.type==='assist'){
+         const key=name.toLocaleLowerCase('th-TH')+'|'+team,old=assists.get(key)||{name,team,assists:0};
+         old.assists+=1;assists.set(key,old);
+       }
+     });
+   });
+   return {goals:[...goals.values()].sort((a,b)=>b.goals-a.goals),assists:[...assists.values()].sort((a,b)=>b.assists-a.assists)};
+ }
+ const oldHomeScorers=window.renderHomeScorers;
+ window.renderHomeScorers=function(){
+   const el=$('homeTopScorers');if(!el)return;
+   const totals=eventTotals();
+   const merged=new Map(totals.goals.map(x=>[x.name.toLocaleLowerCase('th-TH')+'|'+x.team,{...x}]));
+   (state.manualScorers||[]).forEach(x=>{
+     const key=x.name.toLocaleLowerCase('th-TH')+'|manual';
+     if(![...merged.values()].some(v=>v.name.toLocaleLowerCase('th-TH')===x.name.toLocaleLowerCase('th-TH')))merged.set(key,{name:x.name,team:'',goals:Number(x.goals)||0});
+   });
+   const top=[...merged.values()].sort((a,b)=>b.goals-a.goals).slice(0,7);
+   el.innerHTML=top.length?top.map((x,i)=>`<div class="rankrow"><span class="ranknum">${i+1}</span><span style="flex:1">${safe(x.name)}${x.team?` <small class="muted">· ${safe(getTeam(x.team).name)}</small>`:''}</span><strong>${x.goals} ประตู</strong></div>`).join(''):'<div class="empty">รอแอดมินบันทึกเหตุการณ์ผู้ทำประตู</div>';
+   let a=$('homeAssistsPanel');if(!a){a=document.createElement('section');a.id='homeAssistsPanel';a.className='card s6';el.closest('.card')?.insertAdjacentElement('afterend',a)}
+   a.innerHTML=`<div class="cardhead"><h2>🎯 อันดับแอสซิสต์</h2><span class="pill">จากเหตุการณ์แมตช์</span></div>${totals.assists.length?totals.assists.slice(0,7).map((x,i)=>`<div class="rankrow"><span class="ranknum">${i+1}</span><span style="flex:1">${safe(x.name)} <small class="muted">· ${safe(getTeam(x.team).name)}</small></span><strong>${x.assists} A</strong></div>`).join(''):'<div class="empty">รอแอดมินบันทึกผู้แอสซิสต์</div>'}`;
+ };
+ // Ensure the schedule result, scorers, assists and league table repaint together after event save.
+ const previousSaveEvents=window.saveMatchEvents;
+ window.saveMatchEvents=function(i){previousSaveEvents(i);try{renderStandings();renderSchedule();renderHomeScorers()}catch(e){console.error('Match event stats refresh',e)}};
+ // Admin workspace navigation to all management modules, without duplicating their forms.
+ const inbox=$('inbox');
+ if(inbox&&!$('adminWorkspaceLinks')){
+   const links=document.createElement('section');links.id='adminWorkspaceLinks';links.className='card adminonly sectiongap';
+   links.innerHTML=`<div class="cardhead"><h2>⚙ ศูนย์ควบคุมแพลตฟอร์ม</h2><span class="pill">ADMIN WORKSPACE</span></div><p class="foot">ทางลัดไปยังเครื่องมือบริหารจัดการ โดยใช้แบบฟอร์มเดิมของแต่ละส่วน</p><div class="taglist">${[['fees','💲 ค่าสนาม'],['contact','📲 ติดต่อ / ชำระเงิน'],['honors','⚜️ เกียรติยศ'],['schedule','▦ โปรแกรม / สกอร์'],['teams','♟️ ทีม / รายชื่อ'],['jersey','🎽 คำสั่งซื้อ MONER'],['home','📸 ประกาศ / ภาพถ่าย']].map(([id,label])=>`<button class="tagchip" onclick="go('${id}')">${label}</button>`).join('')}</div>`;
+   inbox.appendChild(links);
+ }
+ // Add a direct Admin drawer control after the original drawer is rendered.
+ const originalDrawerRender=window.render;
+ window.render=function(){originalDrawerRender();const action=$('adminDrawerAction');if(action)action.style.display=isAdmin?'flex':'none';};
+ try{renderHomeScorers()}catch(e){console.warn(e)}
+})();
+</script>
+
+</body></html>
