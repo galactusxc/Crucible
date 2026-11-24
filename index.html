@@ -373,22 +373,17 @@ a:hover{color:#4e3764}
 <main id="contact" class="page"><div class="eyebrow">CONTACT & PAYMENT</div><h1 class="title">📲 ติดต่อและชำระเงิน</h1><section class="card"><div class="field"><label>ชื่อ / ทีม</label><input id="contactName" class="control"></div><p class="contact-hotline">ติดต่อผู้จัดด่วนที่ : <b>082-6924980</b> (โทรหรือไลน์)</p><div class="field"><label>รายละเอียดการติดต่อ / แจ้งชำระเงิน</label><textarea id="contactText" class="control" placeholder="*แจ้งชำระเงินระบุ ธนาคาร+ชื่อบัญชี+รหัส 4 ตัวท้ายและเวลาโอนโดยประมาณ"></textarea><p class="foot">*แจ้งชำระเงินระบุ ธนาคาร+ชื่อบัญชี+รหัส 4 ตัวท้ายและเวลาโอนโดยประมาณ</p></div><div class="field"><label>QR สำหรับจ่ายเงิน</label><button type="button" class="btn" id="togglePayQR" onclick="togglePayQR()">▦ แสดง QR สำหรับจ่ายเงิน</button><div id="payQRWrap" class="poster-frame hidden" style="min-height:0;margin-top:8px"><img src="images/qrcodepay.webp" alt="QR สำหรับชำระเงิน" style="max-width:280px;max-height:280px"></div></div><button class="btn primary" onclick="submitGeneralContact()">ส่งข้อความ</button></section></main>
 <main id="inbox" class="page"><div class="eyebrow">ADMIN MESSAGES</div><h1 class="title">📩 ข้อความเข้าส่วนตัว Admin</h1><section class="card adminonly"><div id="inboxList"></div></section><section class="card" id="inboxLocked">พื้นที่นี้แสดงเฉพาะ Admin ที่เข้าสู่ระบบ</section></main>
 <footer class="foot" style="text-align:center;padding:22px"
-   .foot-icons{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-bottom:10px;
-}
-.foot-icons img{
-  width:56px;
-  height:28px;
+  .foot-icons img{
+  width:58px;
+  height:25px;
+  max-width:58px;
+  max-height:25px;
   object-fit:contain;
-  border-radius:7px;
+  border-radius:5px;
   background:#ffffff12;
-  padding:3px;
+  padding:2px 4px;
   display:block;
+  flex:none;
 }>CRUCIBLE CUP (3RD) · Powered by WICTORz · Version 2.15 ©Copyright WICTORz สนใจติดต่อจองสนามเตะทุก ๆ วันพุธ/ศุกร์/เสาร์/อาทิตย์ โทร 082-6924980<div class="foot-icons">
   <img src="images/sponsor.webp" alt="sponsor">
 </div></footer></div>
