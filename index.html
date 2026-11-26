@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#414063"><title>Crucible Cup (3rd) · Powered by WICTORz</title>
-<script></script><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#414063;--panel:#373653;--panel2:#302f4b;--line:#696786;--text:#f7f4f0;--accent:#D49164;--muted:#c0bdd0;--ok:#9cdbb6;--bad:#ffaaa8;--r:18px}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -15%,#77749a 0,transparent 38%),var(--bg);color:var(--text);font:14px 'IBM Plex Sans Thai',sans-serif;padding-bottom:86px}button,input,select,textarea{font:inherit}button{cursor:pointer;color:inherit}.top{position:sticky;top:0;z-index:8;display:flex;align-items:center;gap:12px;padding:10px max(14px,calc((100vw - 1120px)/2));background:#373653f2;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff20}.brand{font:900 14px Inter,sans-serif;flex:1;letter-spacing:.3px}.brandmark{display:flex;align-items:center;gap:8px}.brandmark img{width:34px;height:34px;object-fit:contain;border-radius:7px}.brandmark span{display:block}.hero-logos{display:flex;align-items:center;gap:10px}.hero-logos img{width:54px;height:54px;object-fit:contain;border-radius:10px;background:#ffffff0a;padding:3px}@media(max-width:420px){.brandmark img{width:27px;height:27px}.hero-logos img{width:42px;height:42px}}.brand small{display:block;color:var(--muted);font:500 10px 'IBM Plex Sans Thai';letter-spacing:.7px}.iconbtn,.btn{border:1px solid #ffffff24;border-radius:12px;background:#ffffff0b;padding:9px 12px}.iconbtn{width:40px;height:40px;padding:0;font-size:19px}.notifybtn{position:relative}.notifycount{position:absolute;right:-4px;top:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:20px;background:#b94350;color:white;font:800 10px Inter;display:none;align-items:center;justify-content:center}.notifycount.on{display:flex}.noticeitem{border:1px solid #ffffff20;border-radius:12px;padding:12px;margin:9px 0;background:#ffffff08}.noticeitem h3{font-size:14px;margin:0 0 7px}.noticeitem p{white-space:pre-wrap;line-height:1.6;margin:0 0 10px}.btn.primary{background:var(--accent);color:#28243a;border-color:var(--accent);font-weight:800}.btn.sm{padding:6px 9px;font-size:11px}.wrap{max-width:1120px;margin:auto;padding:18px 14px}.page{display:none}.page.active{display:block;animation:up .2s ease}@keyframes up{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:none}}.title{font:800 clamp(25px,6vw,38px) Inter,'IBM Plex Sans Thai';margin:5px 0 8px}.eyebrow{color:var(--accent);font:800 10px Inter;letter-spacing:1.4px}.sub,.muted,.foot{color:var(--muted)}.sub{margin:0 0 18px}.foot{font-size:11px;line-height:1.7}.hero,.card{border:1px solid #ffffff20;border-radius:var(--r);background:linear-gradient(145deg,#484766,#34334f);padding:16px;min-width:0}.hero{padding:22px;margin-bottom:13px;position:relative;overflow:hidden}.hero:after{content:'CRUCIBLE CUP';position:absolute;right:8px;top:4px;font:900 clamp(24px,5vw,54px) Inter;color:#08080d;opacity:.48;letter-spacing:1px;white-space:nowrap;pointer-events:none}.herohead,.cardhead,.actions{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap}.hero h1{font-size:clamp(22px,5vw,34px);line-height:1.15;margin:10px 0}.count{font:900 clamp(26px,7vw,42px) Inter;color:var(--accent);letter-spacing:2px;margin:14px 0 3px;font-variant-numeric:tabular-nums}.live{display:none;background:#b94350;color:white;border-radius:20px;padding:7px 11px;font:800 10px Inter;letter-spacing:.4px}.live.on{display:inline-flex;align-items:center;gap:7px}.live i{width:7px;height:7px;border-radius:50%;background:white;animation:pulse 1s infinite}@keyframes pulse{50%{opacity:.3}}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}.s12{grid-column:span 12}.s8{grid-column:span 8}.s6{grid-column:span 6}.s4{grid-column:span 4}.card h2{font-size:16px;margin:0}.cardhead{margin-bottom:12px}.pill{border:1px solid #ffffff22;background:#ffffff0a;border-radius:20px;padding:5px 9px;font-size:10px;color:var(--muted)}.field{display:grid;gap:5px;margin:10px 0}.field label{font-size:11px;color:var(--muted)}.field input,.field select,.field textarea,input.control,select.control,textarea.control{width:100%;background:#2c2b45;border:1px solid #777491;border-radius:10px;color:var(--text);padding:10px;min-width:0}.field textarea{min-height:82px;resize:vertical}.field option{background:#302f4b}.match{border-top:1px solid #ffffff17;padding:11px 0}.matchtop{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px;margin-bottom:9px}.versus{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:7px}.club{display:flex;align-items:center;gap:7px;font-weight:600;min-width:0}.club span:last-child{overflow-wrap:anywhere}.club:last-child{justify-content:flex-start;text-align:left}.crest{width:29px;height:29px;border-radius:9px;background:#ffffff12;border:1px solid #ffffff25;display:grid;place-items:center;flex:none;overflow:hidden}.crest img{width:100%;height:100%;object-fit:contain}.score{font:900 17px Inter;white-space:nowrap}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;white-space:nowrap;font-size:11px}th,td{padding:9px 7px;border-bottom:1px solid #ffffff17;text-align:center}th{color:var(--muted);font-size:10px}td:first-child,th:first-child{text-align:left}.rankrow{display:flex;align-items:center;gap:9px;padding:9px 7px;border-bottom:1px solid #ffffff13;font-size:12px}.rankrow strong{margin-left:auto;color:var(--accent)}.ranknum{color:var(--accent);font:800 12px Inter;min-width:19px}.teamgrid,.drinkgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.teamcard{border:1px solid #ffffff1c;background:#ffffff08;border-radius:14px;padding:12px}.teamtop{display:flex;align-items:center;gap:10px}.teamlogo{width:48px;height:48px;object-fit:contain;background:#ffffff0d;border-radius:12px}.adminonly{display:none}.isadmin .adminonly{display:block}.isadmin .adminflex{display:flex}.adminbar{display:none;border:1px solid #D4916455;border-radius:12px;padding:10px;margin-bottom:12px;color:var(--accent)}.isadmin .adminbar{display:flex;align-items:center;justify-content:space-between;gap:8px}.bottom{position:fixed;z-index:7;bottom:0;left:0;right:0;background:#373653f5;border-top:1px solid #ffffff20;padding-bottom:env(safe-area-inset-bottom);height:calc(66px + env(safe-area-inset-bottom));display:flex;justify-content:center}.bottominner{width:min(560px,100%);display:flex;justify-content:space-around;align-items:center}.tab{border:0;background:none;color:var(--muted);display:grid;justify-items:center;gap:3px;font-size:9px;min-width:58px}.tab .ico{font-size:18px}.tab.active{color:var(--accent)}.drawerbg,.modalbg{position:fixed;inset:0;z-index:15;background:#0009;display:none}.drawerbg.open,.modalbg.open{display:block}.drawer{position:absolute;inset:0 auto 0 0;width:min(320px,88vw);overflow:auto;background:#302f4b;padding:20px}.navitem{width:100%;display:block;text-align:left;border:0;background:none;color:var(--text);padding:12px;border-radius:10px}.navitem:hover{background:#ffffff12}.modal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(460px,calc(100% - 28px));max-height:85vh;overflow:auto;background:#373653;border:1px solid #ffffff2b;border-radius:18px;padding:18px}.toast{position:fixed;z-index:30;bottom:80px;left:50%;transform:translate(-50%,12px);opacity:0;pointer-events:none;background:#f5dfd0;color:#30243a;padding:10px 14px;border-radius:12px;font-weight:700;font-size:12px;transition:.2s;max-width:90vw}.toast.show{opacity:1;transform:translate(-50%,0)}.poster-frame{min-height:150px;border:1px dashed #ffffff40;border-radius:12px;display:grid;place-items:center;overflow:hidden}.poster-frame img{width:100%;max-height:300px;object-fit:contain}.empty{text-align:center;padding:20px;color:var(--muted)}.itemline{display:grid;grid-template-columns:1fr 75px 70px;gap:7px;align-items:center;padding:7px 0;border-bottom:1px solid #ffffff12}.drinkpicker{display:grid;grid-template-columns:minmax(0,1fr) 82px auto;gap:8px;align-items:end}.drinkpicked{display:grid;gap:7px;margin:10px 0}.drinkpickrow{display:grid;grid-template-columns:minmax(0,1fr) 74px 38px;align-items:center;gap:8px;padding:9px 10px;border:1px solid #ffffff20;border-radius:11px;background:#ffffff08}.drinkpickrow .drinklabel{min-width:0;overflow-wrap:anywhere;font-size:12px}.drinkpickrow .drinkprice{color:var(--muted);font-size:10px;display:block;margin-top:2px}.drinkqty{width:100%;min-width:0;background:#2c2b45;border:1px solid #777491;border-radius:8px;color:var(--text);padding:8px;text-align:center}.drinkremove{width:34px;height:34px;border:1px solid #ffffff24;border-radius:9px;background:#ffffff08;color:#ffaaa8}.drinkempty{border:1px dashed #ffffff2b;border-radius:11px;padding:13px;text-align:center;color:var(--muted);font-size:12px}@media(max-width:420px){.drinkpicker{grid-template-columns:minmax(0,1fr) 72px}.drinkpicker .btn{grid-column:1/-1;width:100%}.drinkpickrow{grid-template-columns:minmax(0,1fr) 66px 34px;padding:8px}.drinkpickrow .drinklabel{font-size:11px}}.wide{min-width:720px}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:12px}.sectiongap{margin-top:12px}.hidden{display:none!important}a{color:#f0bd99}@media(max-width:700px){.wrap{padding:13px 10px}.s8,.s6,.s4{grid-column:span 12}.hero{padding:17px}.teamgrid,.drinkgrid,.twocol{grid-template-columns:1fr}.card{padding:13px}.top{padding:9px 10px}.brand{font-size:12px}.wideonly{display:none}}
 
@@ -1303,68 +1303,119 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
   $('contactName').value='';$('contactText').value='';$('transferDateTime').value='';
  };
 
- // Supabase password authentication; Admin permissions are granted only to the fixed Auth UID + email.
- const ADMIN_AUTH_UID='d5faa7e5-9bd4-40ce-87d5-8a1a63659f03';
- const ADMIN_AUTH_EMAIL='galactus.xc@gmail.com';
- const isAuthorizedAdminSession=session=>{
-  const u=session?.user;
-  return !!u&&u.id===ADMIN_AUTH_UID&&String(u.email||'').toLowerCase()===ADMIN_AUTH_EMAIL;
+// Supabase password authentication; Admin permissions are granted only to the fixed Auth UID + email.
+ const ADMIN_AUTH_UID = 'd5faa7e5-9bd4-40ce-87d5-8a1a63659f03';
+ const ADMIN_AUTH_EMAIL = 'galactus.xc@gmail.com';
+
+ function getSupabaseAuthClient() {
+  if (window.cloud && window.cloud.auth) return window.cloud;
+  if (window.supabase && typeof SUPABASE_URL !== 'undefined' && typeof SUPABASE_ANON_KEY !== 'undefined') {
+   const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true }
+   });
+   window.cloud = client;
+   return client;
+  }
+  return null;
+ }
+
+ const isAuthorizedAdminSession = session => {
+  const u = session?.user;
+  return !!u && u.id === ADMIN_AUTH_UID && String(u.email || '').trim().toLowerCase() === ADMIN_AUTH_EMAIL.toLowerCase();
  };
- window.adminAction=function(){
-  if(isAdmin){go('inbox');return}
+
+ function syncAdminState(session) {
+  const ok = isAuthorizedAdminSession(session);
+  isAdmin = ok;
+  window.isAdmin = ok;
+  user = ok ? { id: session.user.id, email: session.user.email, role: 'admin' } : null;
+  try {
+   if (ok) sessionStorage.setItem('crucible3-admin', '1');
+   else sessionStorage.removeItem('crucible3-admin');
+  } catch (_) {}
+  document.body.classList.toggle('isadmin', ok);
+  if (typeof render === 'function') render();
+  if (typeof renderInbox === 'function') renderInbox();
+  if (typeof renderNotificationCount === 'function') renderNotificationCount();
+  return ok;
+ }
+
+ window.adminAction = function () {
+  if (isAdmin) { go('inbox'); return; }
   openModal(`<h2>🔐 Admin Login</h2>
-   <p class="foot">เข้าสู่ระบบผู้ดูแล CRUCIBLE CUP (3RD)<br>Admin: galactus.xc@gmail.com</p><p class="foot">ระบบตรวจสอบผ่าน Supabase Auth และสิทธิ์ Admin เฉพาะบัญชีที่กำหนด</p>
-   <div class="field"><label>Admin Email</label><input id="adminLoginEmail" class="control" type="email" value="${ADMIN_AUTH_EMAIL}" readonly autocomplete="username"></div>
+   <p class="foot">เข้าสู่ระบบผู้ดูแล CRUCIBLE CUP (3RD)<br>Admin: ${ADMIN_AUTH_EMAIL}</p>
+   <p class="foot">ระบบตรวจสอบผ่าน Supabase Auth และสิทธิ์ Admin เฉพาะบัญชีที่กำหนด</p>
+   <div class="field"><label>Admin Email</label><input id="adminLoginEmail" class="control" type="email" value="${ADMIN_AUTH_EMAIL}" autocomplete="username"></div>
    <div class="field"><label>Password</label><input id="adminLoginPassword" class="control" type="password" autocomplete="current-password" placeholder="กรอกรหัสผ่าน Admin"></div>
-   <p id="loginError" class="foot" role="alert"></p>
+   <p id="loginError" class="foot" style="color:#b93443" role="alert"></p>
    <button class="btn primary" id="adminLoginSubmit" onclick="login()">เข้าสู่ระบบ Admin</button>
    <button class="btn" onclick="closeModal()">ยกเลิก</button>`);
-  setTimeout(()=>{const el=$('adminLoginPassword');el?.focus();el?.addEventListener('keydown',e=>{if(e.key==='Enter')login()})},50);
+  setTimeout(() => {
+   const el = document.getElementById('adminLoginPassword');
+   el?.focus();
+   el?.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+  }, 50);
  };
- window.login=async function(){
-  if(!cloud){const err=$('loginError');if(err)err.textContent='ไม่สามารถเชื่อมต่อ Supabase ได้ กรุณาตรวจสอบ URL และ Publishable Key';return}
-  const password=$('adminLoginPassword')?.value||'';
-  const err=$('loginError'),submit=$('adminLoginSubmit');
-  if(!password){if(err)err.textContent='กรุณากรอกรหัสผ่าน';return}
-  if(submit){submit.disabled=true;submit.textContent='กำลังตรวจสอบ...'}
-  if(err)err.textContent='';
-  try{
-   const {data,error}=await cloud.auth.signInWithPassword({email:ADMIN_AUTH_EMAIL,password});
-   if(error)throw error;
-   if(!isAuthorizedAdminSession({user:data?.user})){
-    await cloud.auth.signOut();
+
+ window.login = async function () {
+  const sb = getSupabaseAuthClient();
+  const err = document.getElementById('loginError');
+  const submit = document.getElementById('adminLoginSubmit');
+  const email = (document.getElementById('adminLoginEmail')?.value || ADMIN_AUTH_EMAIL).trim();
+  const password = document.getElementById('adminLoginPassword')?.value || '';
+
+  if (!sb || !sb.auth) {
+   if (err) err.textContent = 'ไม่สามารถเชื่อมต่อ Supabase ได้ กรุณาตรวจสอบว่าโหลด Supabase SDK แล้ว';
+   return;
+  }
+  if (!password) {
+   if (err) err.textContent = 'กรุณากรอกรหัสผ่าน';
+   return;
+  }
+  if (submit) { submit.disabled = true; submit.textContent = 'กำลังตรวจสอบ...'; }
+  if (err) err.textContent = '';
+
+  try {
+   const { data, error } = await sb.auth.signInWithPassword({ email, password });
+   if (error) throw error;
+   if (!isAuthorizedAdminSession({ user: data?.user })) {
+    await sb.auth.signOut();
     throw new Error('บัญชีนี้ไม่มีสิทธิ์ Admin (อีเมลหรือ Auth User ID ไม่ตรงกับที่กำหนด)');
    }
-   isAdmin=true;user={role:'admin'};sessionStorage.setItem('crucible3-admin','1');document.body.classList.add('isadmin');
+   syncAdminState(data.session);
    closeModal();
-   await loadCloud();
-   render();
+   if (typeof loadCloud === 'function') await loadCloud();
+   if (typeof render === 'function') render();
    toast('เข้าสู่ระบบ Admin สำเร็จ');
-  }catch(e){
-   if(err)err.textContent=e?.message||'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบอีเมลและรหัสผ่าน';
-  }finally{
-   const btn=$('adminLoginSubmit');if(btn){btn.disabled=false;btn.textContent='เข้าสู่ระบบ Admin'}
+  } catch (e) {
+   if (err) err.textContent = e?.message || 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบอีเมลและรหัสผ่าน';
+  } finally {
+   const btn = document.getElementById('adminLoginSubmit');
+   if (btn) { btn.disabled = false; btn.textContent = 'เข้าสู่ระบบ Admin'; }
   }
  };
- window.logout=async function(){
-  try{if(cloud)await cloud.auth.signOut()}catch(e){console.warn('Supabase sign-out:',e)}
-  isAdmin=false;user=null;sessionStorage.removeItem('crucible3-admin');document.body.classList.remove('isadmin');render();toast('ออกจากระบบ Admin แล้ว');
+
+ window.logout = async function () {
+  const sb = getSupabaseAuthClient();
+  try { if (sb?.auth) await sb.auth.signOut(); } catch (e) { console.warn('Supabase sign-out:', e); }
+  syncAdminState(null);
+  toast('ออกจากระบบ Admin แล้ว');
  };
- if(cloud){
-  cloud.auth.getSession().then(({data,error})=>{
-   if(error)console.warn('Supabase session:',error);
-   if(isAuthorizedAdminSession(data?.session)){
-    isAdmin=true;user={role:'admin'};sessionStorage.setItem('crucible3-admin','1');document.body.classList.add('isadmin');loadCloud().finally(()=>render());
-   }else{
-    isAdmin=false;user=null;sessionStorage.removeItem('crucible3-admin');document.body.classList.remove('isadmin');render();
+
+ const sbInit = getSupabaseAuthClient();
+ if (sbInit?.auth) {
+  sbInit.auth.getSession().then(({ data, error }) => {
+   if (error) console.warn('Supabase session:', error);
+   syncAdminState(data?.session);
+   if (isAuthorizedAdminSession(data?.session) && typeof loadCloud === 'function') {
+    loadCloud().finally(() => { if (typeof render === 'function') render(); });
    }
-  }).catch(e=>console.warn('Supabase session check:',e));
-  cloud.auth.onAuthStateChange((event,session)=>{
-   if(isAuthorizedAdminSession(session)){
-    isAdmin=true;user={role:'admin'};sessionStorage.setItem('crucible3-admin','1');document.body.classList.add('isadmin');
-    if(event==='SIGNED_IN'||event==='INITIAL_SESSION')setTimeout(()=>loadCloud().finally(()=>render()),0);
-   }else{
-    isAdmin=false;user=null;sessionStorage.removeItem('crucible3-admin');document.body.classList.remove('isadmin');render();
+  }).catch(e => console.warn('Supabase session check:', e));
+
+  sbInit.auth.onAuthStateChange((event, session) => {
+   const ok = syncAdminState(session);
+   if (ok && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && typeof loadCloud === 'function') {
+    setTimeout(() => loadCloud().finally(() => { if (typeof render === 'function') render(); }), 0);
    }
   });
  }
