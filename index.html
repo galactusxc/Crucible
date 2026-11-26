@@ -355,7 +355,7 @@ a:hover{color:#4e3764}
 </style></head><body>
 <header class="top"><button class="iconbtn" onclick="toggleDrawer()" aria-label="เปิดเมนู">☰</button><div class="brand brandmark"><img src="images/Logo1.webp" alt="โลโก้หลักลีก"><img src="images/Logo2.webp" alt="โลโก้รองลีก"><span>CRUCIBLE CUP (3RD)<small>POWERED BY WICTORz · SATIT CMU</small></span></div><button class="iconbtn notifybtn" onclick="openNotifications()" aria-label="การแจ้งเตือน">♧<span id="notifyCount" class="notifycount">0</span></button><button class="iconbtn" onclick="adminAction()" aria-label="ผู้ดูแล">⚙</button></header>
 <div class="wrap"><div class="adminbar">⚙ ADMIN MODE <span class="foot">แก้ไขข้อมูลทัวร์นาเมนต์</span><button class="btn sm" onclick="logout()">ออกจากระบบ</button></div>
-<main id="home" class="page active"><section class="hero"><div class="herohead"><div><div class="eyebrow">8 TEAMS · ROUND ROBIN</div><div class="hero-logos"><img src="images/Logo1.webp" alt="โลโก้หลักลีก"><img src="images/Logo2.webp" alt="โลโก้รองลีก"><h1>CRUCIBLE CUP (3RD)</h1></div><div class="muted">Powered by WICTORz</div></div><div class="live" id="liveFlag"><i></i>◉MATCH DAY LIVE!</div></div><div class="count" id="countdown">0 วัน 00:00:00</div><div class="muted" id="nextLabel">นับถอยหลังถึงวันแข่งขัน</div><div class="actions" style="justify-content:flex-start;margin-top:14px"><span class="pill">◷ วันอาทิตย์ที่่ 29, เสาร์ที 5 และอาทิตย์ที่ 6 · เริ่ม 18:30 น.</span><span class="pill">📍 สนามรร.สาธิต มช.</span></div></section>
+<main id="home" class="page active"><section class="hero"><div class="herohead"><div><div class="eyebrow">8 TEAMS · CRUCIBLE CUP</div><div class="hero-logos"><img src="images/Logo1.webp" alt="โลโก้หลักลีก"><img src="images/Logo2.webp" alt="โลโก้รองลีก"><h1>CRUCIBLE CUP (3RD)</h1></div><div class="muted">Powered by WICTORz</div></div><div class="live" id="liveFlag"><i></i>◉MATCH DAY LIVE!</div></div><div class="count" id="countdown">0 วัน 00:00:00</div><div class="muted" id="nextLabel">นับถอยหลังถึงวันแข่งขัน</div><div class="actions" style="justify-content:flex-start;margin-top:14px"><span class="pill">◷ วันอาทิตย์ที่่ 29, เสาร์ที 5 และอาทิตย์ที่ 6 · เริ่ม 18:30 น.</span><span class="pill">📍 สนามรร.สาธิต มช.</span></div></section>
 <div class="grid"><section class="card s8"><div class="cardhead match-section-head"><h2>▦ โปรแกรมและผลการแข่งขัน</h2><div class="match-head-actions"><img src="images/Logo1.webp" alt="โลโก้ลีก"><button class="btn sm" onclick="location.reload()">↻ รีเฟรช</button><button class="btn sm" onclick="go('schedule')">ดูทั้งหมด →</button></div></div><div id="homeMatches"></div><div class="adminonly" style="margin-top:12px;border-top:1px solid #ffffff20;padding-top:12px"><label style="display:flex;gap:8px;align-items:flex-start"><input id="announceMatchResults" type="checkbox" onchange="toggleMatchAnnouncement(this.checked)"><span>ประกาศแจ้งเตือนว่าอัปเดตผลการแข่งขันและสกอร์แมตช์ 1–11 สิ้นสุดแล้ว</span></label><p class="foot">เมื่อเลือกแล้ว ผู้ใช้ทุกคนจะเห็นประกาศในกระดิ่งแจ้งเตือน และสามารถกดอ่านเพื่อลบออกจากรายการของตนเองได้</p></div></section><section class="card s4"><div class="cardhead"><h2>🏆 ตารางคะแนน</h2><button class="btn sm" onclick="go('standings')">ดู →</button></div><div id="miniStandings"></div></section><section class="card s6"><div class="cardhead"><h2>📸 Mengbo MENU</h2><span class="pill">ประกาศ / ภาพถ่าย</span></div><div id="menuAnnouncement" class="foot" style="white-space:pre-wrap"></div><div class="adminonly"><div class="field"><label>ประกาศ (แก้ไขได้)</label><textarea id="menuAnnouncementInput"></textarea></div><button class="btn primary sm" onclick="saveMenuAnnouncement()">บันทึกประกาศ</button><button class="btn sm" onclick="clearMenuAnnouncement()">ลบ</button><div class="field"><label>เลือกประกาศแจ้งเตือนภาพถ่าย (เลือกได้ครั้งละ 1 รายการ)</label><div class="photo-notice-options"><label><input type="checkbox" id="photoNoticeUploaded" onchange="setPhotoNotice('uploaded',this.checked)"> ประกาศแจ้งเตือนว่าอัปโหลดภาพถ่ายลงเพจแล้ว</label><label><input type="checkbox" id="photoNoticeNone" onchange="setPhotoNotice('none',this.checked)"> อุ๊บ! ไม่มีช่างภาพสำหรับสัปดาห์นี้ จึงไม่มีภาพถ่ายให้นาจา</label><label><input type="checkbox" id="photoNoticeSundayMonday" onchange="setPhotoNotice('sundayMonday',this.checked)"> กำลังลงภาพถ่าย... คาดว่าจะเสร็จในวันอาทิตย์หรือจันทร์นี้</label><label><input type="checkbox" id="photoNoticeMonday" onchange="setPhotoNotice('monday',this.checked)"> กำลังลงภาพถ่าย... คาดว่าจะเสร็จในวันจันทร์นี้</label><label><input type="checkbox" id="photoNoticeTuesday" onchange="setPhotoNotice('tuesday',this.checked)"> กำลังลงภาพถ่าย... คาดว่าจะเสร็จในอังคารนี้</label></div></div></div><div class="field"><label>สถานะภาพถ่าย</label><div id="photoStateText" class="pill">ไม่มีช่างภาพและภาพถ่ายจัดเตรียมไว้ในสัปดาห์นี้</div></div><p class="foot">Facebook: ติดตามข่าวสาร รูปภาพ เพจการแข่งขันที่ <a href="https://www.facebook.com/profile.php?id=100090974629841" target="_blank" rel="noopener">เพจการแข่งขัน ↗</a></p></section><section class="card s6"><div class="cardhead"><h2>🥤 สั่งเครื่องดื่มและอุปกรณ์วันแข่งขัน</h2><span class="pill">สูงสุด 8 ชนิด / ครั้ง</span></div><div class="field"><label>ชื่อผู้สั่ง</label><input id="drinkName" class="control" placeholder="ชื่อผู้สั่ง"></div><div class="field"><label>ทีมสังกัด</label><select id="drinkTeam" class="control"></select></div><div class="drinkpicker"><div class="field"><label for="drinkPicker">เลือกเมนูเครื่องดื่ม</label><select id="drinkPicker" class="control"></select></div><div class="field"><label for="drinkQty">จำนวน</label><input id="drinkQty" class="control" type="number" min="1" max="99" value="1" inputmode="numeric"></div><button class="btn primary" onclick="addDrinkItem()">＋ เพิ่มเมนู</button></div><div id="drinkOptions" class="drinkpicked" aria-live="polite"></div><div class="actions"><b id="drinkTotal">0/8 ชนิด · รวม ฿0</b><button class="btn primary" onclick="submitDrinks()">ยืนยันสั่ง</button><button class="btn" onclick="resetDrinks()">ยกเลิก</button></div></section><section class="card s6"><div class="cardhead"><h2>🏅 อันดับผู้เล่นยอดเยี่ยม</h2><span class="pill">7 รายชื่อ</span></div><div id="homeBestPlayers"></div><div class="adminonly sectiongap"><div class="field"><label>ชื่อผู้เล่น</label><input id="bestName" class="control"></div><div class="field"><label>ทีม</label><select id="bestTeam" class="control"></select></div><div class="field"><label>Rating</label><input id="bestRating" class="control" type="number" step="0.1"></div><div class="field"><label>ตำแหน่ง</label><input id="bestPosition" class="control"></div><button class="btn primary sm" onclick="saveBestPlayer()">บันทึกผู้เล่นยอดเยี่ยม</button></div></section>
 <section class="card s6"><div class="cardhead"><h2>⚽ อันดับดาวซัลโว</h2><span class="pill">7 รายชื่อ</span></div><div id="homeTopScorers"></div><div class="adminonly sectiongap"><div class="field"><label>ชื่อผู้เล่น</label><input id="manualScorerName" class="control" placeholder="ชื่อผู้เล่น"></div><div class="field"><label>จำนวนประตู</label><input id="manualScorerGoals" class="control" type="number" min="0" step="1" inputmode="numeric" placeholder="0"></div><button class="btn primary sm" onclick="saveManualScorer()">บันทึกดาวซัลโว</button><p class="foot">เพิ่มได้สูงสุด 7 รายชื่อ · ชื่อซ้ำจะอัปเดตจำนวนประตูของคนเดิม</p></div></section>
 
@@ -363,7 +363,7 @@ a:hover{color:#4e3764}
 
 <section class="card s6"><div class="cardhead"><h2>📍 นำทางไปสนาม</h2></div><p class="muted">สนาม รร.สาธิตมหาวิทยาลัยเชียงใหม่</p><a class="btn primary" href="https://maps.app.goo.gl/1pWY6EuHEYenq5QG9" target="_blank" rel="noopener">เปิด Google Maps ↗</a></section><section class="card s12"><div class="cardhead"><h2>📜 กติกาการแข่งขันและประกาศ</h2><span class="pill">OFFICIAL RULES</span></div><div id="leagueRules" class="foot" style="white-space:pre-wrap;line-height:1.8">รอแอดมินประกาศกติกาการแข่งขัน</div><div class="adminonly sectiongap"><div class="field"><label>เขียนกติกา / ประกาศการแข่งขัน</label><textarea id="leagueRulesInput" class="control" placeholder="พิมพ์กติกาและประกาศให้ผู้เข้าร่วมลีกทราบ"></textarea></div><button class="btn primary sm" onclick="saveLeagueRules()">บันทึกกติกาและประกาศ</button></div></section></div></main>
 <main id="standings" class="page"><div class="eyebrow">LEAGUE TABLE</div><h1 class="title">🏆 ตารางคะแนนแบบเรียลไทม์</h1><section class="card"><div class="tablewrap"><table id="standingsTable"></table></div><p class="foot">ผู้ชนะเลิศอันดับที่ 1 วัดจากคะแนนสูงสุด หากเท่ากัน วัดที่ GD และหากเท่ากันต้องมีการเตะจุดโทษ Best of 3/3 รางวัลจะมอบให้แก่ทีมอันดับที่ 1 และ 2 เท่านั้น</p></section></main>
-<main id="schedule" class="page"><div class="eyebrow">FIXTURES & RESULTS</div><h1 class="title">▦ โปรแกรมการแข่งขัน</h1><p class="sub">พบกันหมดทั้งหมดจำนวน 8 ทีม จำนวน 28 แมตช์ 3 ครั้ง อาทิตย์ที่ 27 พ.ย., เสาร์ที่ 5 ธ.ค. และ อาทิตย์ที่ 6 ธ.ค. 2569 สัปดาห์การแข่งขัน</p><div id="scheduleList"></div></main>
+<main id="schedule" class="page"><div class="eyebrow">FIXTURES & RESULTS</div><h1 class="title">▦ โปรแกรมการแข่งขัน</h1><p class="sub">โปรแกรมการแข่งขัน 28 แมตช์ · 29 พ.ย., 5 ธ.ค. และ 6 ธ.ค. 2569</p><div id="scheduleList"></div></main>
 
 <main id="points" class="page"><div class="eyebrow">WICTORz WEEKLY POINTS</div><h1 class="title">🐦 แมงโบ้งมันก้าย : TOP Players</h1><p class="sub">นักเตะยอดเยี่ยมประจำทัวร์นาเมนต์ MVP Of the Weeks มีกันใครบ้าง นักเตะผู้นำความโดดเด่นได้แก่</p><section class="card"><div id="topPlayers"></div></section><section class="card sectiongap adminonly"><h2>จัดการอันดับ TOP Players</h2><div class="grid"><div class="field s6"><label>ชื่อนักเตะ</label><input id="topName" class="control"></div><div class="field s6"><label>ทีม</label><select id="topTeam" class="control"></select></div><div class="field s6"><label>คะแนน</label><input id="topScore" class="control" type="number" step="0.5"></div></div><button class="btn primary" onclick="saveTopPlayer()">เพิ่ม / บันทึกคะแนน</button><div id="adminTopPlayers"></div></section></main>
 <main id="teams" class="page"><div class="eyebrow">PARTICIPATING TEAMS</div><h1 class="title">♟️ ทีม/สโมสรที่เข้าร่วม</h1><div id="teamGrid" class="teamgrid"></div><section id="teamPortal" class="card teamportal hidden"></section><section class="card sectiongap adminonly"><h2>แก้ไขทีม</h2><div class="field"><label>ทีม</label><select id="editTeam" class="control"></select></div><div class="field"><label>ชื่อทีม</label><input id="editTeamName" class="control"></div><div class="field"><label>ลิงก์โลโก้ภาพ (URL)</label><input id="editTeamLogo" class="control" placeholder="https://..."></div><div class="field"><label>คำอธิบายทีม (ไม่เกิน 80 ตัวอักษร)</label><textarea id="editTeamDesc" maxlength="80" class="control"></textarea></div><button class="btn primary" onclick="saveTeamEdit()">บันทึกทีม</button><button class="btn" onclick="resetTeams()">คืนค่ารายชื่อเริ่มต้น</button></section></main>
@@ -880,7 +880,7 @@ renderHonors=function(){
 // Start only after every feature constant and override is initialized.
 const editTeamSelect=document.getElementById('editTeam');if(editTeamSelect)editTeamSelect.addEventListener('change',loadTeamEdit);
 fillCollars();
-if(sessionStorage.getItem('crucible3-admin')==='1'){user={role:'admin'};isAdmin=true;document.body.classList.add('isadmin')}
+/* Admin mode is restored only from a verified Supabase Auth session. */
 try{render();tick()}catch(e){console.error('App startup render failed',e);toast('โหลดหน้าระบบไม่สำเร็จ กรุณารีเฟรช')}
 setInterval(()=>{try{tick()}catch(e){console.error(e)}},1000);
 if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud render failed',e)}});try{cloud.channel('league-state-live').on('postgres_changes',{event:'UPDATE',schema:'public',table:'league_state',filter:'id=eq.1'},payload=>{if(payload?.new?.data){let msgs=state.messages;state={...state,...payload.new.data,messages:msgs};seedState();try{render()}catch(e){console.error('Realtime render failed',e)}}}).subscribe()}catch(e){console.warn('Realtime subscription unavailable',e)}}
@@ -1156,13 +1156,244 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
  const inbox=$('inbox');
  if(inbox&&!$('adminWorkspaceLinks')){
    const links=document.createElement('section');links.id='adminWorkspaceLinks';links.className='card adminonly sectiongap';
-   links.innerHTML=`<div class="cardhead"><h2>⚙ ศูนย์ควบคุมแพลตฟอร์ม</h2><span class="pill">ADMIN WORKSPACE</span></div><p class="foot">ทางลัดไปยังเครื่องมือบริหารจัดการ โดยใช้แบบฟอร์มเดิมของแต่ละส่วน</p><div class="taglist">${[['fees','💲 ค่าสนาม'],['contact','📲 ติดต่อ / ชำระเงิน'],['honors','⚜️ เกียรติยศ'],['schedule','▦ โปรแกรม / สกอร์'],['teams','♟️ ทีม / รายชื่อ'],['jersey','🎽 คำสั่งซื้อ MONER'],['home','📸 ประกาศ / ภาพถ่าย']].map(([id,label])=>`<button class="tagchip" onclick="go('${id}')">${label}</button>`).join('')}</div>`;
+   links.innerHTML=`<div class="cardhead"><h2>⚙ ศูนย์ควบคุมแพลตฟอร์ม</h2><span class="pill">ADMIN WORKSPACE</span></div><p class="foot">ทางลัดไปยังเครื่องมือบริหารจัดการ โดยใช้แบบฟอร์มเดิมของแต่ละส่วน</p><div class="taglist">${[['fees','💲 ค่าสนาม'],['honors','⚜️ เกียรติยศ'],['schedule','▦ โปรแกรม / สกอร์'],['teams','♟️ ทีม / รายชื่อ'],['jersey','🎽 คำสั่งซื้อ MONER'],['home','📸 ประกาศ / ภาพถ่าย']].map(([id,label])=>`<button class="tagchip" onclick="go('${id}')">${label}</button>`).join('')}</div>`;
    inbox.appendChild(links);
  }
  // Add a direct Admin drawer control after the original drawer is rendered.
  const originalDrawerRender=window.render;
  window.render=function(){originalDrawerRender();const action=$('adminDrawerAction');if(action)action.style.display=isAdmin?'flex':'none';};
  try{renderHomeScorers()}catch(e){console.warn(e)}
+})();
+</script>
+
+
+<script>
+/* CRUCIBLE CUP requested update patch — additive; existing state and UI are retained. */
+(function(){
+ const $=id=>document.getElementById(id), escx=v=>typeof esc==='function'?esc(v):String(v??'');
+ // Updated 8-team identity: c4 is AMSxHumanFC; preserve its existing crest asset until a new logo is supplied.
+ function ensurePatchState(){
+  state.globalRanking=Array.isArray(state.globalRanking)?state.globalRanking:Array.from({length:10},(_,i)=>({team:'',points:'',trend:'same'}));
+  state.teamSpaces=state.teamSpaces||{};state.matchEvents=state.matchEvents||{};
+  state.paymentMessages=state.paymentMessages||[];
+ }
+ ensurePatchState();
+ // Durable writes: local cache is immediate; the shared state is written to Supabase by authenticated admin.
+ const baseSave=save;
+ save=function(){
+  try{localStorage.setItem('crucible3-state',JSON.stringify(state))}catch(e){console.warn('Local backup failed',e)}
+  render();
+  if(cloud&&isAdmin)saveCloud().catch(e=>{console.error('Supabase save failed',e);toast('บันทึกออนไลน์ไม่สำเร็จ: ตรวจสอบ Supabase SQL / การเข้าสู่ระบบ')});
+ };
+ // Restore cloud state for every visitor (read-only policy); realtime channel already exists.
+ // Match-event display and totals: own goals reduce the team's score and are not scorer goals.
+ const baseSaveEvents=window.saveMatchEvents;
+ window.saveMatchEvents=async function(i){
+  if(!isAdmin)return;
+  const m=schedule()[i],events=matchEvents(i);
+  events.forEach(e=>{e.count=(['goal','penalty','free_kick','own_goal'].includes(e.type)?Math.max(1,Math.min(6,Number(e.count)||1)):1);e.team=(e.team==='away'||e.team===m.b)?m.b:m.a;e.name=(e.name||'').trim()});
+  if(!state.matchEvents[i].some(e=>!e.name)){state.fixtures[i].homeScore=Math.max(0,Number(state.fixtures[i].homeScore)||0);state.fixtures[i].awayScore=Math.max(0,Number(state.fixtures[i].awayScore)||0)}
+  // Apply only the own-goal delta relative to the prior persisted event list.
+  const prev=state._previousMatchEvents?.[i]||[];
+  const tally=(list,teamId)=>{
+   let n=0;
+   list.forEach(e=>{
+    const team=(e.team===m.b||e.team==='away')?m.b:m.a;
+    const count=Math.max(1,Math.min(6,Number(e.count)||1));
+    if(['goal','free_kick','penalty'].includes(e.type)&&team===teamId)n+=count;
+    if(e.type==='own_goal'&&team!==teamId)n+=count;
+   });
+   return n;
+  };
+  const homeDelta=tally(events,m.a)-tally(prev,m.a),awayDelta=tally(events,m.b)-tally(prev,m.b);
+  state.fixtures[i].homeScore=Math.max(0,(Number(state.fixtures[i].homeScore)||0)+homeDelta);
+  state.fixtures[i].awayScore=Math.max(0,(Number(state.fixtures[i].awayScore)||0)+awayDelta);
+  state._previousMatchEvents=state._previousMatchEvents||{};state._previousMatchEvents[i]=JSON.parse(JSON.stringify(events));
+  save();toast('บันทึกเหตุการณ์แมตช์และข้อมูลนักเตะแล้ว');closeMatchDetail();renderSchedule();renderStandings();if(window.renderHomeScorers)renderHomeScorers();
+ };
+ // Replace event form with exact event types, side selection and goal-only quantity.
+ const eventTypes=[['goal','ประตู'],['free_kick','ฟรีคิกจากประตู'],['penalty','จุดโทษ'],['missed_penalty','พลาดจุดโทษ'],['own_goal','O.G.'],['assist','แอสซิสต์'],['yellow','ใบเหลือง'],['red','ใบแดง'],['second_yellow','ใบเหลืองแดง']];
+ window.eventRowHTML=function(i,j,e){
+  const types=eventTypes.map(([v,l])=>`<option value="${v}" ${e.type===v?'selected':''}>${l}</option>`).join('');
+  const goal=['goal','free_kick','penalty','own_goal'].includes(e.type);
+  return `<div class="event-row"><select onchange="updateMatchEvent(${i},${j},'type',this.value)">${types}</select><input placeholder="เช่น 18.เจมส์ หรือ 10.จอห์น" value="${escx(e.name||'')}" onchange="updateMatchEvent(${i},${j},'name',this.value)"><button class="drinkremove" onclick="removeMatchEvent(${i},${j})">×</button></div><div class="event-row event-meta"><select onchange="updateMatchEvent(${i},${j},'team',this.value)"><option value="${schedule()[i].a}" ${e.team===schedule()[i].a||e.team==='home'?'selected':''}>Home · ${escx(getTeam(schedule()[i].a).name)}</option><option value="${schedule()[i].b}" ${e.team===schedule()[i].b||e.team==='away'?'selected':''}>Away · ${escx(getTeam(schedule()[i].b).name)}</option></select><input placeholder="นาที (ไม่บังคับ)" value="${escx(e.minute||'')}" onchange="updateMatchEvent(${i},${j},'minute',this.value)">${goal?`<span class="event-count"><button class="btn sm" onclick="changeEventCount(${i},${j},-1)">−</button><b>${Math.max(1,Math.min(6,Number(e.count)||1))}</b><button class="btn sm" onclick="changeEventCount(${i},${j},1)">＋</button></span>`:'<span class="pill">จำนวน 1</span>'}</div>`;
+ };
+ const oldOpen=window.openMatchDetail;
+ window.openMatchDetail=function(i){
+  if(!isAdmin)return;
+  let m=schedule()[i],ev=matchEvents(i);
+  $('matchDetail').innerHTML=`<div class="cardhead"><h2>แมตช์ ${i+1} · เหตุการณ์ / รายชื่อ</h2><button class="btn" onclick="closeMatchDetail()">ปิด ×</button></div><p class="foot">${escx(getTeam(m.a).name)} พบ ${escx(getTeam(m.b).name)}</p><div id="eventRows">${ev.map((e,j)=>eventRowHTML(i,j,e,true)).join('')}</div><div class="actions"><button class="btn primary" onclick="addMatchEvent(${i})">＋ เพิ่มเหตุการณ์</button><button class="btn" onclick="saveMatchEvents(${i})">บันทึกข้อมูลถาวร</button></div><p class="foot">จำนวน 1–6 ใช้เฉพาะประตู / ฟรีคิก / จุดโทษ / O.G. เหตุการณ์อื่นนับ 1 ครั้ง</p>`;
+  $('matchDetailBg').classList.add('open');
+ };
+ // Ensure newly selected event type resets quantity to one unless it is a goal event.
+ const oldUpdate=window.updateMatchEvent;
+ window.updateMatchEvent=function(i,j,k,v){oldUpdate(i,j,k,v);if(k==='type'&&!['goal','free_kick','penalty','own_goal'].includes(v))matchEvents(i)[j].count=1;};
+ // Team-specific fixtures/results block appended as the final card after manager/signature info.
+ const originalPortal=window.renderTeamPortal;
+ window.renderTeamPortal=function(){
+  originalPortal();
+  const id=viewedTeamId||activeTeamId,el=$('teamPortal');if(!id||!el||el.classList.contains('hidden'))return;
+  el.querySelector('#teamScheduleCard')?.remove();
+  const ms=schedule().filter(m=>m.a===id||m.b===id).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start));
+  const html=ms.map(m=>`<div class="match"><div class="matchtop">${m.date} · คู่ที่ ${m.i+1} · ${m.start}–${m.end}</div><div class="versus"><div class="club">${escx(getTeam(m.a).name)}</div><div class="score">${m.homeScore!==null&&m.awayScore!==null?m.homeScore+' : '+m.awayScore:'VS'}</div><div class="club">${escx(getTeam(m.b).name)}</div></div>${m.confirmed?'<span class="pill">ยืนยันผลแล้ว</span>':'<span class="pill">โปรแกรมการแข่งขัน</span>'}</div>`).join('');
+  const card=document.createElement('section');card.id='teamScheduleCard';card.className='card sectiongap';card.innerHTML=`<div class="cardhead"><h2>▦ โปรแกรมและผลการแข่งขันของ ${escx(getTeam(id).name)}</h2></div>${html||'<div class="empty">ยังไม่มีโปรแกรมการแข่งขัน</div>'}`;
+  const sig=el.querySelector('.signature-footer');if(sig)sig.insertAdjacentElement('afterend',card);else el.appendChild(card);
+ };
+ // Team signature pad; name and signature are saved together to the team's persistent record.
+ window.saveTeamSignature=function(id){
+  if(activeTeamId!==id)return toast('เข้าสู่พื้นที่ทีมก่อนบันทึกลายเซ็น');
+  const sp=teamSpace(id),name=$('teamSignatureManager')?.value.trim()||sp.manager||'';
+  if(!name)return toast('กรุณากรอกชื่อผู้จัดการทีมก่อน');
+  const c=$('teamSignatureCanvas');if(!c)return;
+  sp.manager=name;sp.signature=c.toDataURL('image/png');sp.signatureAt=new Date().toISOString();save();renderTeamPortal();toast('บันทึกชื่อผู้จัดการทีมและลายเซ็นแล้ว');
+ };
+ window.clearTeamSignature=function(id){if(activeTeamId!==id)return;const c=$('teamSignatureCanvas');if(c){c.getContext('2d').clearRect(0,0,c.width,c.height);c.dataset.signed='0'}teamSpace(id).signature='';save();renderTeamPortal()};
+ const oldPortal2=window.renderTeamPortal;
+ window.renderTeamPortal=function(){
+  oldPortal2();
+  const id=viewedTeamId||activeTeamId,el=$('teamPortal');if(!id||!el||el.classList.contains('hidden'))return;
+  el.querySelector('#teamSignatureFooter')?.remove();
+  const sp=teamSpace(id),card=document.createElement('section');card.id='teamSignatureFooter';card.className='card signature-footer sectiongap';
+  card.innerHTML=`<h3>✍️ ยืนยันส่งทีมเข้าร่วมและรับรู้โปรแกรมการแข่งขันแล้วยังไม่ได้ลงนาม</h3><div class="field"><label>ชื่อผู้จัดการทีม / ตัวแทนทีม</label><input id="teamSignatureManager" class="control" value="${escx(sp.manager||'')}" placeholder="กรอกชื่อผู้จัดการทีม"></div><p class="foot">ช่องลงลายเซ็นตัวแทนทีม · คลิก/แตะในกรอบเพื่อเขียนด้วยปากกาเมจิกสีดำ แล้วกดบันทึก</p><canvas id="teamSignatureCanvas" width="640" height="140" style="display:block;width:100%;max-width:520px;height:auto;background:#fff;border:1px dashed #bbb;border-radius:8px;touch-action:none"></canvas><div class="actions" style="margin-top:8px"><button class="btn primary sm" onclick="saveTeamSignature('${id}')">บันทึก</button><button class="btn sm" onclick="clearTeamSignature('${id}')">ล้างช่องเซ็น</button></div>`;
+  const mgr=el.querySelector('.mgr-box');(mgr||el).insertAdjacentElement('afterend',card);
+  const matchCard=el.querySelector('#teamScheduleCard');if(matchCard)el.appendChild(matchCard);const canvas=$('teamSignatureCanvas'),ctx=canvas.getContext('2d');if(sp.signature){const im=new Image();im.onload=()=>ctx.drawImage(im,0,0,canvas.width,canvas.height);im.src=sp.signature}
+  let drawing=false,last=null;const pos=e=>{const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}};
+  canvas.onpointerdown=e=>{if(activeTeamId!==id)return;drawing=true;last=pos(e);canvas.setPointerCapture(e.pointerId);ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(last.x,last.y)};
+  canvas.onpointermove=e=>{if(!drawing)return;let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();last=p};
+  canvas.onpointerup=canvas.onpointercancel=()=>{drawing=false};
+ };
+ // Payment moved into the field-fees page. Keep the original contact page DOM hidden for compatibility.
+ const contactPage=$('contact');if(contactPage)contactPage.remove();
+ const contactNav=pages.findIndex(p=>p[0]==='contact');if(contactNav>=0)pages.splice(contactNav,1);
+ const fees=$('fees');if(fees&&!$('paymentInsideFees')){
+  const c=document.createElement('section');c.id='paymentInsideFees';c.className='card sectiongap';
+  c.innerHTML=`<div class="cardhead"><h2>📲 ติดต่อและแจ้งชำระเงิน</h2></div><div class="field"><label>ชื่อ / ทีม</label><input id="contactName" class="control"></div><p class="contact-hotline">ติดต่อผู้จัดด่วนที่ : <b>082-6924980</b> (โทรหรือไลน์)</p><div class="field"><label>รายละเอียด / ธนาคาร · ชื่อบัญชี · เลขบัญชี 4 ตัวท้าย</label><textarea id="contactText" class="control" placeholder="กรอกรายละเอียดการชำระเงิน"></textarea></div><div class="field"><label>QR สำหรับจ่ายเงิน</label><button class="btn" type="button" onclick="togglePayQR()">▦ แสดง QR สำหรับจ่ายเงิน</button><div id="payQRWrap" class="poster-frame hidden" style="min-height:0;margin-top:8px"><img src="images/qrcodepay.webp" alt="QR สำหรับชำระเงิน" style="max-width:280px;max-height:280px"></div></div><div class="field"><label>วันที่และเวลาโอนโดยประมาณ</label><input id="transferDateTime" class="control" placeholder="เช่น 29 พ.ย. 2569 ประมาณ 19:30 น."></div><button class="btn primary" onclick="submitPaymentWithDateTime()">ส่งข้อความ</button>`;
+  fees.appendChild(c);
+ }
+ window.submitPaymentWithDateTime=function(){
+  const name=$('contactName')?.value.trim(),detail=$('contactText')?.value.trim(),dt=$('transferDateTime')?.value.trim();
+  if(!name||!detail||!dt)return toast('กรอกชื่อ / ทีม รายละเอียดธนาคาร และวันเวลาโอนโดยประมาณ');
+  const message=[detail,'วันที่และเวลาโอนโดยประมาณ: '+dt].join('\n');
+  if(cloud){cloud.from('league_inbox').insert({type:'payment',name,message}).then(({error})=>{if(error){console.error(error);toast('ส่งไม่สำเร็จ กรุณาตรวจสอบการตั้งค่า Supabase')}else toast('ส่งข้อมูลแจ้งชำระเงินให้ Admin แล้ว')})}
+  else {state.paymentMessages.push({name,message,time:new Date().toISOString()});save();toast('บันทึกข้อความแจ้งชำระเงินแล้ว')}
+  $('contactName').value='';$('contactText').value='';$('transferDateTime').value='';
+ };
+
+ // Supabase admin identity: magic-link login, restricted to the supplied Auth UID.
+ const ADMIN_AUTH_UID='d5faa7e5-9bd4-40ce-87d5-8a1a63659f03';
+ const ADMIN_AUTH_EMAIL='galactus.xc@gmail.com';
+ window.adminAction=function(){
+  if(isAdmin){go('inbox');return}
+  openModal(`<h2>🔐 Admin · Supabase</h2><p class="foot">ส่งลิงก์เข้าสู่ระบบไปยัง ${ADMIN_AUTH_EMAIL} ระบบจะอนุญาตสิทธิ์ผู้ดูแลเฉพาะบัญชีที่มี User ID ตรงกับบัญชีที่กำหนด</p><p id="loginError" class="foot"></p><button class="btn primary" onclick="login()">ส่งลิงก์เข้าสู่ระบบ</button> <button class="btn" onclick="closeModal()">ยกเลิก</button>`);
+ };
+ window.login=async function(){
+  if(!cloud)return toast('ยังไม่ได้ตั้งค่า Supabase URL / Publishable key');
+  const err=$('loginError');if(err)err.textContent='กำลังส่งลิงก์เข้าสู่ระบบ...';
+  const {error}=await cloud.auth.signInWithOtp({email:ADMIN_AUTH_EMAIL,options:{emailRedirectTo:location.href}});
+  if(error){if(err)err.textContent=error.message;return}
+  if(err)err.textContent='ส่งลิงก์เข้าสู่ระบบแล้ว กรุณาเปิดอีเมลและกดลิงก์จากอุปกรณ์นี้';
+ };
+ window.logout=async function(){
+  if(cloud)await cloud.auth.signOut();
+  isAdmin=false;user=null;sessionStorage.removeItem('crucible3-admin');document.body.classList.remove('isadmin');render();toast('ออกจากระบบ Admin แล้ว');
+ };
+ if(cloud){
+  cloud.auth.getSession().then(({data})=>{
+   const uid=data?.session?.user?.id;
+   if(uid===ADMIN_AUTH_UID){isAdmin=true;user={role:'admin'};sessionStorage.setItem('crucible3-admin','1');document.body.classList.add('isadmin');loadCloud().finally(()=>render())}
+   else {isAdmin=false;sessionStorage.removeItem('crucible3-admin');render()}
+  });
+  cloud.auth.onAuthStateChange((_event,session)=>{
+   const uid=session?.user?.id;
+   if(uid===ADMIN_AUTH_UID){isAdmin=true;user={role:'admin'};sessionStorage.setItem('crucible3-admin','1');document.body.classList.add('isadmin');setTimeout(()=>loadCloud().finally(()=>render()),0)}
+   else if(!uid){isAdmin=false;user=null;sessionStorage.removeItem('crucible3-admin');document.body.classList.remove('isadmin');render()}
+  });
+ }
+ // GLOBAL League Ranking
+ const honors=$('honors');
+ if(honors&&!$('globalLeagueRanking')){
+  const box=document.createElement('section');box.id='globalLeagueRanking';box.className='card sectiongap';
+  box.innerHTML=`<div class="cardhead"><h2>GLOBAL League RANKING</h2><span class="pill">อันดับสโมสรตลอดกาล · TOP 10</span></div><p class="foot">คะแนนอันดับครูซิเบิลแรงกิ้ง = เงินรางวัลสะสมรวมทั้งหมด ÷ 10</p><div class="tablewrap"><table><thead><tr><th>อันดับตลอดกาลทีมอันดับที่</th><th>ชื่อทีมและโลโก้ทีม</th><th>คะแนนอันดับครูซิเบิลแรงกิ้ง</th><th>แนวโน้ม</th></tr></thead><tbody id="globalRankingRows"></tbody></table></div>`;
+  honors.appendChild(box);
+ }
+ window.renderGlobalRanking=function(){
+  const body=$('globalRankingRows');if(!body)return;
+  body.innerHTML=state.globalRanking.map((r,i)=>`<tr style="${r.trend==='up'?'background:#e5f7eb':r.trend==='down'?'background:#fde9eb':''}"><td><b>${i+1}</b>${r.trend==='up'?' <span style="color:#138544">↑</span>':r.trend==='down'?' <span style="color:#c32d3d">↓</span>':''}</td><td>${isAdmin?`<select class="control" onchange="setGlobalRank(${i},'team',this.value)"><option value="">เลือกทีม</option>${state.teams.map(t=>`<option value="${t.id}" ${r.team===t.id?'selected':''}>${escx(t.name)}</option>`).join('')}</select>`:r.team?`${escx(getTeam(r.team).name)}`:'—'}${r.team?` <img src="${escx(getTeam(r.team).logo)}" style="width:28px;height:28px;object-fit:contain;vertical-align:middle">`:''}</td><td>${isAdmin?`<input class="control" type="number" min="0" value="${escx(r.points)}" style="width:110px" onchange="setGlobalRank(${i},'points',this.value)">`:r.points||'—'}</td><td>${isAdmin?`<button class="btn sm" onclick="setGlobalRank(${i},'trend','up')">Up</button> <button class="btn sm" onclick="setGlobalRank(${i},'trend','down')">Down</button> <button class="btn sm" onclick="setGlobalRank(${i},'trend','same')">ปกติ</button>`:r.trend==='up'?'↑':r.trend==='down'?'↓':'—'}</td></tr>`).join('');
+ };
+ window.setGlobalRank=function(i,k,v){if(!isAdmin)return;state.globalRanking[i][k]=v;save();renderGlobalRanking()};
+
+ // Ranking inputs record accumulated prize money; the displayed ranking score is prize money / 10.
+ window.renderGlobalRanking=function(){
+  const body=$('globalRankingRows');if(!body)return;
+  body.innerHTML=state.globalRanking.map((r,i)=>{
+   const reward=Number(r.reward)||0,points=reward/10;
+   return `<tr style="${r.trend==='up'?'background:#e5f7eb':r.trend==='down'?'background:#fde9eb':''}">
+    <td><b>${i+1}</b>${r.trend==='up'?' <span style="color:#138544;font-weight:900">↑</span>':r.trend==='down'?' <span style="color:#c32d3d;font-weight:900">↓</span>':''}</td>
+    <td>${isAdmin?`<select class="control" onchange="setGlobalRank(${i},'team',this.value)"><option value="">เลือกทีม</option>${state.teams.map(t=>`<option value="${t.id}" ${r.team===t.id?'selected':''}>${escx(t.name)}</option>`).join('')}</select>`:r.team?escx(getTeam(r.team).name):'—'}${r.team?` <img src="${escx(getTeam(r.team).logo)}" style="width:28px;height:28px;object-fit:contain;vertical-align:middle">`:''}</td>
+    <td>${isAdmin?`<input class="control" type="number" min="0" value="${reward}" style="width:125px" placeholder="เงินรางวัลสะสม" onchange="setGlobalRank(${i},'reward',this.value)">`:'฿'+reward.toLocaleString('en-US')}<div class="foot">${points.toLocaleString('en-US',{maximumFractionDigits:2})} คะแนน</div></td>
+    <td>${isAdmin?`<label><input type="checkbox" ${r.trend==='up'?'checked':''} onchange="setGlobalRank(${i},'trend',this.checked?'up':'same')"> Up</label><br><label><input type="checkbox" ${r.trend==='down'?'checked':''} onchange="setGlobalRank(${i},'trend',this.checked?'down':'same')"> Down</label>`:r.trend==='up'?'↑':r.trend==='down'?'↓':'—'}</td></tr>`;
+  }).join('');
+ };
+ window.renderMatchEvents=function(i){
+  const m=schedule()[i],ev=(state.matchEvents[i]||[]).filter(e=>e.name&&e.name.trim());
+  if(!ev.length)return '';
+  const sides=[{id:m.a,cls:'home'},{id:m.b,cls:'away'}];
+  const icons={goal:'icongoal.webp',free_kick:'icongoalfreekick.webp',penalty:'icongoalpen.webp',missed_penalty:'icongoalmisspen.webp',own_goal:'icongoalog.webp',yellow:'iconyellow.webp',red:'iconyellow.webp',second_yellow:'iconyellow.webp'};
+  return `<div class="match-event-display">${sides.map(side=>{
+   const own=ev.filter(e=>(e.team===m.b||e.team==='away'?m.b:m.a)===side.id);
+   const goals=own.filter(e=>['goal','free_kick','penalty','own_goal','missed_penalty'].includes(e.type));
+   const assists=own.filter(e=>e.type==='assist'),cards=own.filter(e=>['yellow','red','second_yellow'].includes(e.type));
+   const goalHtml=goals.map(e=>`<div class="match-event-line">${e.type==='missed_penalty'?`<img class="event-icon-img" src="images/${icons[e.type]}">`: `<img class="event-icon-img" src="images/${icons[e.type]}">`} ${escx(e.name)}${e.type==='missed_penalty'?'':(Number(e.count)>1?` ×${Math.min(6,Number(e.count))}`:'')}</div>`).join('');
+   const assistHtml=assists.map(e=>`<div class="match-event-line"><em class="assist-name">(A.${escx(e.name)})</em></div>`).join('');
+   const cardHtml=cards.map(e=>`<div class="match-event-line"><img class="event-icon-img" src="images/${icons[e.type]}"> ${escx(e.name)}</div>`).join('');
+   return `<div class="match-event-side ${side.cls}">${goalHtml}${assistHtml}${cards.length?`<div class="match-event-cards">${cardHtml}</div>`:''}</div>`;
+  }).join('')}</div>`;
+ };
+
+ window.renderSchedule=function(){
+  const ms=schedule(),groups=[
+   ['2026-11-29','ตารางการแข่งขัน · วันอาทิตย์ที่ 29 พฤศจิกายน 2569 · 10 แมตช์',ms.filter(m=>m.date==='2026-11-29')],
+   ['2026-12-05','ตารางการแข่งขัน · วันเสาร์ที่ 5 ธันวาคม 2569 · 9 แมตช์',ms.filter(m=>m.date==='2026-12-05')],
+   ['2026-12-06','ตารางการแข่งขัน · วันอาทิตย์ที่ 6 ธันวาคม 2569 · 9 แมตช์',ms.filter(m=>m.date==='2026-12-06')]
+  ];
+  $('scheduleList').innerHTML=groups.map(([d,title,list])=>`<section class="card sectiongap"><div class="cardhead"><h2>${title}</h2><span class="pill">${list.length} แมตช์</span></div>${list.map(matchHTML).join('')}</section>`).join('');
+  $('homeMatches').innerHTML=ms.filter(m=>m.date==='2026-11-29').map(matchHTML).join('')+`<button class="btn sm" onclick="go('schedule')">ดูโปรแกรมทั้งหมด 28 แมตช์ →</button>`;
+ };
+ window.changeEventCount=function(i,j,delta){
+  if(!isAdmin)return;const e=matchEvents(i)[j];if(!e)return;
+  if(['goal','free_kick','penalty','own_goal'].includes(e.type))e.count=Math.max(1,Math.min(6,(Number(e.count)||1)+delta));
+  else e.count=1;
+  openMatchDetail(i);
+ };
+ // Remove the specifically requested home-page cards; leave all other content unchanged.
+ function removeRequestedHomeCards(){
+  document.querySelectorAll('#home .card').forEach(card=>{
+   const tx=card.innerText||'';
+   if(tx.includes('นำทางไปสนาม')||tx.includes('OFFICIAL RULES')||tx.includes('กติกาการแข่งขันและประกาศ'))card.remove();
+  });
+  $('homeAssistsPanel')?.remove();
+ }
+ const oldRender=window.render;
+ window.render=function(){oldRender();removeRequestedHomeCards();renderGlobalRanking()};
+ // Match-event scorer list: assists are excluded from goals, missed pens contribute zero.
+ const oldTotals=window.eventTotals;
+ window.renderHomeScorers=function(){
+  const el=$('homeTopScorers');if(!el)return;
+  const goals=new Map();
+  Object.entries(state.matchEvents||{}).forEach(([idx,events])=>{
+   const m=schedule()[Number(idx)];if(!m)return;
+   (events||[]).forEach(e=>{
+    if(!e.name||!e.name.trim()||!['goal','free_kick','penalty'].includes(e.type))return;
+    const tid=e.team===m.b||e.team==='away'?m.b:m.a,k=normalizedPlayerName(e.name)+'|'+tid;
+    const x=goals.get(k)||{name:e.name,team:tid,goals:0};x.goals+=Math.max(1,Math.min(6,Number(e.count)||1));goals.set(k,x);
+   });
+  });
+  const list=[...goals.values()].sort((a,b)=>b.goals-a.goals).slice(0,7);
+  el.innerHTML=list.map((x,i)=>`<div class="rankrow"><span class="ranknum">${i+1}</span><span style="flex:1">${escx(x.name)} <small class="muted">· ${escx(getTeam(x.team).name)}</small></span><strong>${x.goals} ประตู</strong></div>`).join('')||'<div class="empty">รอแอดมินบันทึกเหตุการณ์ผู้ทำประตู</div>';
+  $('homeAssistsPanel')?.remove();
+ };
+ // Hide map/rules if they are embedded in home grid and refresh all requested displays.
+ try{render();renderGlobalRanking();renderTeamPortal()}catch(e){console.warn('Requested patch render',e)}
 })();
 </script>
 
