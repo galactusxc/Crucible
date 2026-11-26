@@ -372,7 +372,7 @@ a:hover{color:#4e3764}
 <main id="fees" class="page"><div class="eyebrow">TEAM FINANCE</div><h1 class="title">💲 ค่าสนาม</h1><section class="card"><div class="tablewrap"><table id="feesTable"></table></div><div class="adminonly"><button class="btn primary" onclick="saveFees()">บันทึกค่าสนาม</button></div></section></main>
 <main id="contact" class="page"><div class="eyebrow">CONTACT & PAYMENT</div><h1 class="title">📲 ติดต่อและชำระเงิน</h1><section class="card"><div class="field"><label>ชื่อ / ทีม</label><input id="contactName" class="control"></div><p class="contact-hotline">ติดต่อผู้จัดด่วนที่ : <b>082-6924980</b> (โทรหรือไลน์)</p><div class="field"><label>รายละเอียดการติดต่อ / แจ้งชำระเงิน</label><textarea id="contactText" class="control" placeholder="*แจ้งชำระเงินระบุ ธนาคาร+ชื่อบัญชี+รหัส 4 ตัวท้ายและเวลาโอนโดยประมาณ"></textarea><p class="foot">*แจ้งชำระเงินระบุ ธนาคาร+ชื่อบัญชี+รหัส 4 ตัวท้ายและเวลาโอนโดยประมาณ</p></div><div class="field"><label>QR สำหรับจ่ายเงิน</label><button type="button" class="btn" id="togglePayQR" onclick="togglePayQR()">▦ แสดง QR สำหรับจ่ายเงิน</button><div id="payQRWrap" class="poster-frame hidden" style="min-height:0;margin-top:8px"><img src="images/qrcodepay.webp" alt="QR สำหรับชำระเงิน" style="max-width:280px;max-height:280px"></div></div><button class="btn primary" onclick="submitGeneralContact()">ส่งข้อความ</button></section></main>
 <main id="inbox" class="page"><div class="eyebrow">ADMIN MESSAGES</div><h1 class="title">📩 ข้อความเข้าส่วนตัว Admin</h1><section class="card adminonly"><div id="inboxList"></div></section><section class="card" id="inboxLocked">พื้นที่นี้แสดงเฉพาะ Admin ที่เข้าสู่ระบบ</section></main>
-<footer class="foot" style="text-align:center;padding:22px"
+<style>
 .foot-icons{
   display:flex !important;
   align-items:center !important;
@@ -394,7 +394,8 @@ a:hover{color:#4e3764}
   padding:2px !important;
   display:block !important;
 }
->CRUCIBLE CUP (3RD) · Powered by WICTORz · Version 2.15 ©Copyright WICTORz สนใจติดต่อจองสนามเตะทุก ๆ วันพุธ/ศุกร์/เสาร์/อาทิตย์ โทร 082-6924980<div class="foot-icons">
+</style>
+<footer class="foot" style="text-align:center;padding:22px">CRUCIBLE CUP (3RD) · Powered by WICTORz · Version 2.15 ©Copyright WICTORz สนใจติดต่อจองสนามเตะทุก ๆ วันพุธ/ศุกร์/เสาร์/อาทิตย์ โทร 082-6924980<div class="foot-icons">
   <img src="images/sponsor.webp" alt="sponsor">
 </div></footer></div>
 <div class="bottom"><div class="bottominner"><button class="tab active" data-go="home" onclick="go('home')"><img class="navico" src="images/Home.webp" alt="">หน้าแรก</button><button class="tab" data-go="standings" onclick="go('standings')"><img class="navico" src="images/table.webp" alt="">คะแนน</button><button class="tab" onclick="toggleDrawer()"><span class="ico">☰</span>เมนู</button></div></div><div class="drawerbg" id="drawerbg" onclick="if(event.target===this)toggleDrawer()"><aside class="drawer"><h2>CRUCIBLE CUP (3RD)</h2><p class="foot">Powered by WICTORz</p><div id="drawerNav"></div></aside></div><div class="modalbg" id="modalbg" onclick="if(event.target===this)closeModal()"><div class="modal" id="modal"></div></div><div class="matchdetail-bg" id="matchDetailBg" onclick="if(event.target===this)closeMatchDetail()"><aside class="matchdetail" id="matchDetail"></aside></div><div id="tacticWin" class="tacticwin hidden" role="dialog" aria-modal="true" aria-label="กระดานแทคติค"><div class="tw-head"><h2>📋 กระดานแทคติค</h2><button class="btn sm" onclick="closeTacticBoard()">ปิด ✕</button></div><div class="tw-tools"><button class="btn" id="tbAddred" onclick="tbAdd('red')"><i class="tb-ico tb-ico-red"></i>วงกลมแดง <b id="tbCntred">0/7</b></button><button class="btn" id="tbAddwhite" onclick="tbAdd('white')"><i class="tb-ico tb-ico-white">✕</i>กากบาทขาว <b id="tbCntwhite">0/7</b></button><button class="btn" id="tbAddblue" onclick="tbAdd('blue')"><i class="tb-ico tb-ico-blue"></i>สี่เหลี่ยมน้ำเงิน <b id="tbCntblue">0/7</b></button><span class="tb-sep"></span><button class="btn" id="tbPenblack" onclick="tbToggleTool('black')">🖊️ เมจิกดำ (เส้นใหญ่)</button><button class="btn" id="tbPenred" onclick="tbToggleTool('red')">🖍️ เมจิกแดง (เส้นเล็ก)</button><span class="tb-sep"></span><button class="btn" id="tbUndo" onclick="tbUndo()">↶ Undo</button><button class="btn primary" onclick="tbSave()">💾 บันทึกกระดาน</button><button class="btn" onclick="tbClear()">🗑️ ล้างกระดาน</button></div><p class="foot tw-hint" id="tbHint"></p><div class="tw-stage"><svg id="tbSvg" viewBox="0 0 520 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="สนามฟุตบอลจำลอง"><defs><clipPath id="tbClip"><rect width="520" height="800" rx="16"/></clipPath></defs><g clip-path="url(#tbClip)"><rect width="520" height="800" fill="#2d8a3e"/><g fill="#2a8038"><rect y="80" width="520" height="80"/><rect y="240" width="520" height="80"/><rect y="400" width="520" height="80"/><rect y="560" width="520" height="80"/><rect y="720" width="520" height="80"/></g></g><g fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="3"><rect x="20" y="20" width="480" height="760"/><path d="M20 400H500"/><circle cx="260" cy="400" r="62"/><rect x="130" y="20" width="260" height="130"/><rect x="195" y="20" width="130" height="50"/><path d="M212.6 150A62 62 0 0 0 307.4 150"/><rect x="130" y="650" width="260" height="130"/><rect x="195" y="730" width="130" height="50"/><path d="M212.6 650A62 62 0 0 1 307.4 650"/><path d="M34 20A14 14 0 0 1 20 34M486 20A14 14 0 0 0 500 34M20 766A14 14 0 0 1 34 780M486 780A14 14 0 0 1 500 766"/><rect x="225" y="6" width="70" height="14"/><rect x="225" y="780" width="70" height="14"/></g><g fill="#fff" fill-opacity=".9"><circle cx="260" cy="400" r="4"/><circle cx="260" cy="110" r="3.5"/><circle cx="260" cy="690" r="3.5"/></g><g id="tbTokens"></g><g id="tbStrokes" pointer-events="none"></g></svg></div></div>
@@ -855,7 +856,7 @@ render=function(){
 const TEAM_SHORT={c1:'Kai KFC',c2:'แจกแต้ม',c3:'STP FC',c4:'AMSxHumanFC',c5:'อุเทน',c6:'F.O.P.',c7:'เสี่ยพลสั่งลุย',c8:'ราชันขุนขาว'};
 function matchHTML(m,opts={}){
   const done=m.homeScore!==null&&m.awayScore!==null;
-  const date=({'2026-11-22':'อาทิตย์ 22 พ.ย.','2026-11-29':'อาทิตย์ 29 พ.ย.','2026-12-05':'เสาร์ 5 ธ.ค.','2026-12-06':'อาทิตย์ 6 ธ.ค.','2026-12-05':'เสาร์ 5 ธ.ค.'})[m.date]||m.date;
+  const date=({'2026-11-22':'อาทิตย์ 22 พ.ย.','2026-11-29':'อาทิตย์ 29 พ.ย.','2026-12-05':'เสาร์ 5 ธ.ค.','2026-12-06':'อาทิตย์ 6 ธ.ค.'})[m.date]||m.date;
   const a=getTeam(m.a),b=getTeam(m.b),an=opts.shortNames?(TEAM_SHORT[m.a]||a.name):a.name,bn=opts.shortNames?(TEAM_SHORT[m.b]||b.name):b.name;
   const teamLink=(t,n,reverse=false)=>`<span class="teamlink-name" role="link" tabindex="0" onclick="openTeamPublic('${t.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTeamPublic('${t.id}')}"><img src="${esc(t.logo||'')}" alt="">${esc(n)}</span>`;
   return `<div class="match"><div class="matchtop"><span>คู่ที่ ${m.dayNo||m.i+1}${opts.hideDate?'':' · '+date} · ${timeFor(m)} น.</span><span>${done?'FT':'โปรแกรม'}</span></div><div class="versus"><div class="club">${teamLink(a,an,true)}</div><div class="score">${done?m.homeScore+' : '+m.awayScore:'VS'}</div><div class="club">${teamLink(b,bn)}</div></div>${isAdmin?`<div class="actions" style="margin-top:9px"><label class="foot">${esc(a.name)} <input class="control" style="width:60px" type="number" min="0" value="${state.scoreDrafts?.[m.i]?.homeScore??m.homeScore??''}" oninput="setScore(${m.i},'homeScore',this.value)"></label><label class="foot">${esc(b.name)} <input class="control" style="width:60px" type="number" min="0" value="${state.scoreDrafts?.[m.i]?.awayScore??m.awayScore??''}" oninput="setScore(${m.i},'awayScore',this.value)"></label><button class="btn sm" onclick="clearScore(${m.i})">ล้างสกอร์</button><button class="btn primary sm" onclick="confirmScore(${m.i})">ยืนยันผลสกอร์</button><span class="pill">${m.confirmed?'ยืนยันแล้ว':'ยังไม่ยืนยัน'}</span></div>`:''}</div>`;
@@ -1303,9 +1304,10 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
   $('contactName').value='';$('contactText').value='';$('transferDateTime').value='';
  };
 
-// Supabase password authentication; Admin permissions are granted only to the fixed Auth UID + email.
+// Admin Authentication (galactus.xc@gmail.com / 123456 + Supabase session sync)
  const ADMIN_AUTH_UID = 'd5faa7e5-9bd4-40ce-87d5-8a1a63659f03';
  const ADMIN_AUTH_EMAIL = 'galactus.xc@gmail.com';
+ const ADMIN_AUTH_PASS = '123456';
 
  function getSupabaseAuthClient() {
   if (window.cloud && window.cloud.auth) return window.cloud;
@@ -1321,31 +1323,54 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
 
  const isAuthorizedAdminSession = session => {
   const u = session?.user;
-  return !!u && u.id === ADMIN_AUTH_UID && String(u.email || '').trim().toLowerCase() === ADMIN_AUTH_EMAIL.toLowerCase();
+  if (!u) return false;
+  const emailMatch = String(u.email || '').trim().toLowerCase() === ADMIN_AUTH_EMAIL.toLowerCase();
+  return emailMatch && (!u.id || u.id === ADMIN_AUTH_UID || u.id === 'local-admin');
  };
 
- function syncAdminState(session) {
-  const ok = isAuthorizedAdminSession(session);
-  isAdmin = ok;
-  window.isAdmin = ok;
-  user = ok ? { id: session.user.id, email: session.user.email, role: 'admin' } : null;
+ function hasLocalAdminSession() {
   try {
-   if (ok) sessionStorage.setItem('crucible3-admin', '1');
-   else sessionStorage.removeItem('crucible3-admin');
+   return sessionStorage.getItem('crucible3-admin') === '1' || localStorage.getItem('crucible3-admin-auth') === ADMIN_AUTH_EMAIL;
+  } catch (_) {
+   return false;
+  }
+ }
+
+ function applyAdminUI(ok, adminUser) {
+  isAdmin = !!ok;
+  window.isAdmin = !!ok;
+  user = ok ? (adminUser || { id: ADMIN_AUTH_UID, email: ADMIN_AUTH_EMAIL, role: 'admin' }) : null;
+  try {
+   if (ok) {
+    sessionStorage.setItem('crucible3-admin', '1');
+    localStorage.setItem('crucible3-admin-auth', ADMIN_AUTH_EMAIL);
+   } else {
+    sessionStorage.removeItem('crucible3-admin');
+    localStorage.removeItem('crucible3-admin-auth');
+   }
   } catch (_) {}
-  document.body.classList.toggle('isadmin', ok);
+  document.body.classList.toggle('isadmin', !!ok);
   if (typeof render === 'function') render();
   if (typeof renderInbox === 'function') renderInbox();
   if (typeof renderNotificationCount === 'function') renderNotificationCount();
-  return ok;
+  return !!ok;
+ }
+
+ function syncAdminState(session) {
+  if (isAuthorizedAdminSession(session)) {
+   return applyAdminUI(true, { id: session.user.id, email: session.user.email, role: 'admin' });
+  }
+  if (hasLocalAdminSession()) {
+   return applyAdminUI(true, { id: ADMIN_AUTH_UID, email: ADMIN_AUTH_EMAIL, role: 'admin' });
+  }
+  return applyAdminUI(false, null);
  }
 
  window.adminAction = function () {
   if (isAdmin) { go('inbox'); return; }
   openModal(`<h2>🔐 Admin Login</h2>
-   <p class="foot">เข้าสู่ระบบผู้ดูแล CRUCIBLE CUP (3RD)<br>Admin: ${ADMIN_AUTH_EMAIL}</p>
-   <p class="foot">ระบบตรวจสอบผ่าน Supabase Auth และสิทธิ์ Admin เฉพาะบัญชีที่กำหนด</p>
-   <div class="field"><label>Admin Email</label><input id="adminLoginEmail" class="control" type="email" value="${ADMIN_AUTH_EMAIL}" autocomplete="username"></div>
+   <p class="foot">เข้าสู่ระบบผู้ดูแล CRUCIBLE CUP (3RD)</p>
+   <div class="field"><label>User (Email)</label><input id="adminLoginEmail" class="control" type="email" value="${ADMIN_AUTH_EMAIL}" autocomplete="username" placeholder="galactus.xc@gmail.com"></div>
    <div class="field"><label>Password</label><input id="adminLoginPassword" class="control" type="password" autocomplete="current-password" placeholder="กรอกรหัสผ่าน Admin"></div>
    <p id="loginError" class="foot" style="color:#b93443" role="alert"></p>
    <button class="btn primary" id="adminLoginSubmit" onclick="login()">เข้าสู่ระบบ Admin</button>
@@ -1361,34 +1386,48 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
   const sb = getSupabaseAuthClient();
   const err = document.getElementById('loginError');
   const submit = document.getElementById('adminLoginSubmit');
-  const email = (document.getElementById('adminLoginEmail')?.value || ADMIN_AUTH_EMAIL).trim();
-  const password = document.getElementById('adminLoginPassword')?.value || '';
+  const email = (document.getElementById('adminLoginEmail')?.value || '').trim();
+  const password = (document.getElementById('adminLoginPassword')?.value || '').trim();
 
-  if (!sb || !sb.auth) {
-   if (err) err.textContent = 'ไม่สามารถเชื่อมต่อ Supabase ได้ กรุณาตรวจสอบว่าโหลด Supabase SDK แล้ว';
-   return;
-  }
-  if (!password) {
-   if (err) err.textContent = 'กรุณากรอกรหัสผ่าน';
+  if (!email || !password) {
+   if (err) err.textContent = 'กรุณากรอก User และรหัสผ่านให้ครบถ้วน';
    return;
   }
   if (submit) { submit.disabled = true; submit.textContent = 'กำลังตรวจสอบ...'; }
   if (err) err.textContent = '';
 
   try {
-   const { data, error } = await sb.auth.signInWithPassword({ email, password });
-   if (error) throw error;
-   if (!isAuthorizedAdminSession({ user: data?.user })) {
-    await sb.auth.signOut();
-    throw new Error('บัญชีนี้ไม่มีสิทธิ์ Admin (อีเมลหรือ Auth User ID ไม่ตรงกับที่กำหนด)');
+   const isDirectAdminMatch = email.toLowerCase() === ADMIN_AUTH_EMAIL.toLowerCase() && password === ADMIN_AUTH_PASS;
+   if (isDirectAdminMatch) {
+    if (sb?.auth) {
+     try { await sb.auth.signInWithPassword({ email: ADMIN_AUTH_EMAIL, password }); } catch (_) {}
+    }
+    applyAdminUI(true, { id: ADMIN_AUTH_UID, email: ADMIN_AUTH_EMAIL, role: 'admin' });
+    closeModal();
+    if (typeof loadCloud === 'function') await loadCloud().catch(() => {});
+    if (typeof render === 'function') render();
+    toast('เข้าสู่ระบบ Admin สำเร็จ');
+    return;
    }
-   syncAdminState(data.session);
-   closeModal();
-   if (typeof loadCloud === 'function') await loadCloud();
-   if (typeof render === 'function') render();
-   toast('เข้าสู่ระบบ Admin สำเร็จ');
+
+   if (sb && sb.auth) {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) throw new Error('User หรือรหัสผ่านไม่ถูกต้อง');
+    if (!isAuthorizedAdminSession({ user: data?.user })) {
+     await sb.auth.signOut();
+     throw new Error('บัญชีนี้ไม่มีสิทธิ์เข้าใช้งานระบบ Admin');
+    }
+    syncAdminState(data.session);
+    closeModal();
+    if (typeof loadCloud === 'function') await loadCloud().catch(() => {});
+    if (typeof render === 'function') render();
+    toast('เข้าสู่ระบบ Admin สำเร็จ');
+    return;
+   }
+
+   throw new Error('User หรือรหัสผ่านไม่ถูกต้อง');
   } catch (e) {
-   if (err) err.textContent = e?.message || 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบอีเมลและรหัสผ่าน';
+   if (err) err.textContent = e?.message || 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบ User และรหัสผ่าน';
   } finally {
    const btn = document.getElementById('adminLoginSubmit');
    if (btn) { btn.disabled = false; btn.textContent = 'เข้าสู่ระบบ Admin'; }
@@ -1398,21 +1437,29 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
  window.logout = async function () {
   const sb = getSupabaseAuthClient();
   try { if (sb?.auth) await sb.auth.signOut(); } catch (e) { console.warn('Supabase sign-out:', e); }
-  syncAdminState(null);
+  applyAdminUI(false, null);
   toast('ออกจากระบบ Admin แล้ว');
  };
+
+ if (hasLocalAdminSession()) {
+  applyAdminUI(true, { id: ADMIN_AUTH_UID, email: ADMIN_AUTH_EMAIL, role: 'admin' });
+ }
 
  const sbInit = getSupabaseAuthClient();
  if (sbInit?.auth) {
   sbInit.auth.getSession().then(({ data, error }) => {
    if (error) console.warn('Supabase session:', error);
    syncAdminState(data?.session);
-   if (isAuthorizedAdminSession(data?.session) && typeof loadCloud === 'function') {
+   if (isAdmin && typeof loadCloud === 'function') {
     loadCloud().finally(() => { if (typeof render === 'function') render(); });
    }
   }).catch(e => console.warn('Supabase session check:', e));
 
   sbInit.auth.onAuthStateChange((event, session) => {
+   if (event === 'SIGNED_OUT') {
+    if (!hasLocalAdminSession()) applyAdminUI(false, null);
+    return;
+   }
    const ok = syncAdminState(session);
    if (ok && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && typeof loadCloud === 'function') {
     setTimeout(() => loadCloud().finally(() => { if (typeof render === 'function') render(); }), 0);
