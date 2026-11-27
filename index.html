@@ -363,7 +363,7 @@ a:hover{color:#4e3764}
 
 <section class="card s6"><div class="cardhead"><h2>📍 นำทางไปสนาม</h2></div><p class="muted">สนาม รร.สาธิตมหาวิทยาลัยเชียงใหม่</p><a class="btn primary" href="https://maps.app.goo.gl/1pWY6EuHEYenq5QG9" target="_blank" rel="noopener">เปิด Google Maps ↗</a></section><section class="card s12"><div class="cardhead"><h2>📜 กติกาการแข่งขันและประกาศ</h2><span class="pill">OFFICIAL RULES</span></div><div id="leagueRules" class="foot" style="white-space:pre-wrap;line-height:1.8">รอแอดมินประกาศกติกาการแข่งขัน</div><div class="adminonly sectiongap"><div class="field"><label>เขียนกติกา / ประกาศการแข่งขัน</label><textarea id="leagueRulesInput" class="control" placeholder="พิมพ์กติกาและประกาศให้ผู้เข้าร่วมลีกทราบ"></textarea></div><button class="btn primary sm" onclick="saveLeagueRules()">บันทึกกติกาและประกาศ</button></div></section></div></main>
 <main id="standings" class="page"><div class="eyebrow">LEAGUE TABLE</div><h1 class="title">🏆 ตารางคะแนนแบบเรียลไทม์</h1><section class="card"><div class="tablewrap"><table id="standingsTable"></table></div><p class="foot">ผู้ชนะเลิศอันดับที่ 1 วัดจากคะแนนสูงสุด หากเท่ากัน วัดที่ GD และหากเท่ากันต้องมีการเตะจุดโทษ Best of 3/3 รางวัลจะมอบให้แก่ทีมอันดับที่ 1 และ 2 เท่านั้น</p></section></main>
-<main id="schedule" class="page"><div class="eyebrow">FIXTURES & RESULTS</div><h1 class="title">▦ โปรแกรมการแข่งขัน</h1><p class="sub">โปรแกรมการแข่งขัน 28 แมตช์ · 29 พ.ย., 5 ธ.ค. และ 6 ธ.ค. 2569</p><div id="scheduleList"></div></main>
+<main id="schedule" class="page"><div class="eyebrow">FIXTURES & RESULTS</div><h1 class="title">▦ โปรแกรมและผลการแข่งขัน</h1><div class="eyebrow" style="margin:0 0 8px">LIVE DATA · SUPABASE SYNC</div><p class="sub">โปรแกรมการแข่งขัน 28 แมตช์ · 29 พ.ย. (10), 5 ธ.ค. (9) และ 6 ธ.ค. (9) 2569</p><div id="scheduleList"></div></main>
 
 <main id="points" class="page"><div class="eyebrow">WICTORz WEEKLY POINTS</div><h1 class="title">🐦 แมงโบ้งมันก้าย : TOP Players</h1><p class="sub">นักเตะยอดเยี่ยมประจำทัวร์นาเมนต์ MVP Of the Weeks มีกันใครบ้าง นักเตะผู้นำความโดดเด่นได้แก่</p><section class="card"><div id="topPlayers"></div></section><section class="card sectiongap adminonly"><h2>จัดการอันดับ TOP Players</h2><div class="grid"><div class="field s6"><label>ชื่อนักเตะ</label><input id="topName" class="control"></div><div class="field s6"><label>ทีม</label><select id="topTeam" class="control"></select></div><div class="field s6"><label>คะแนน</label><input id="topScore" class="control" type="number" step="0.5"></div></div><button class="btn primary" onclick="saveTopPlayer()">เพิ่ม / บันทึกคะแนน</button><div id="adminTopPlayers"></div></section></main>
 <main id="teams" class="page"><div class="eyebrow">PARTICIPATING TEAMS</div><h1 class="title">♟️ ทีม/สโมสรที่เข้าร่วม</h1><div id="teamGrid" class="teamgrid"></div><section id="teamPortal" class="card teamportal hidden"></section><section class="card sectiongap adminonly"><h2>แก้ไขทีม</h2><div class="field"><label>ทีม</label><select id="editTeam" class="control"></select></div><div class="field"><label>ชื่อทีม</label><input id="editTeamName" class="control"></div><div class="field"><label>ลิงก์โลโก้ภาพ (URL)</label><input id="editTeamLogo" class="control" placeholder="https://..."></div><div class="field"><label>คำอธิบายทีม (ไม่เกิน 80 ตัวอักษร)</label><textarea id="editTeamDesc" maxlength="80" class="control"></textarea></div><button class="btn primary" onclick="saveTeamEdit()">บันทึกทีม</button><button class="btn" onclick="resetTeams()">คืนค่ารายชื่อเริ่มต้น</button></section></main>
@@ -402,57 +402,58 @@ a:hover{color:#4e3764}
 <div class="toast" id="toast"></div>
 <script>
 const SUPABASE_URL = 'https://mzhpqjpwszncdskeyqoz.supabase.co'; const SUPABASE_ANON_KEY = 'sb_publishable_istIY0jzBhtTUII8a2TdMg_o0wk-2Ba';
-const cloud = window.supabase && /^https:\/\//.test(SUPABASE_URL) && SUPABASE_ANON_KEY ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true}}):null;
+const cloud = window.supabase && /^https:\/\//.test(SUPABASE_URL) && SUPABASE_ANON_KEY ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true}}):null; if(cloud)window.cloud=cloud;
 const originalTeams=[['c1','KAI KFC','images/kfc.png'],['c2','แจกแต้มxเด็กสานฝัน','images/jaktam.png'],['c3','STP FC','images/sekstp.png'],['c4','AMSxHumanFC','images/ams.png'],['c5','อุเทน','images/uthan.png'],['c6','F.O.P.','images/fop.png'],['c7','เสี่ยพลสั่งลุย','images/youth2.png'],['c8','ราชันขุนขาว','images/whitek.png']];
 const collars=[['คอกลม',260],['คอกลมไขว้',260],['คอกลมต่อสองชิ้น',270],['คอกลมต่อสี่ชิ้น',290],['คอกลมเปลือย',280],['คอกลมเปลือยต่อสามชิ้น',290],['คอวีชน',280],['คอวีชนต่อสามชั้น',290],['คอวีต่อชนห้าชิ้น',300],['คอวีทับ',280],['คอวีทับต่อสามชิ้น',290],['คอวีทับต่อห้าชิ้น',300],['คอวีตัด',280],['คอวีตัดต่อสามชิ้น',290],['คอวีตัดต่อห้าชิ้น',300],['คอกลมคอวีหยดน้ำ',280],['คอวีคางหมู',280],['หยดน้ำแทรกสาบ',290],['คอวีคางหมูแทรกสาบ',290],['คอวีคางหมูปิดสาบนอก',290],['คอวีคางหมูมีปก',320],['คอวีคางหมูมีปกแทรกสาบ',330],['คอวีชนมีปก',320],['คอวีปกแทรกสาบ',320],['คอวีทับมีปก',320],['คอวีทับมีปกแทรกสาบ',330],['คอวีตัดมีปก',320],['คอวีเย็บไขว้มีปก',320],['คอวีวายมีปก',330],['คอคางหมูมีปกแทรกสาบไขว้',330],['คอกลมผ่ากระดุม 1 เม็ด',320],['คอปกกระดุม 1 เม็ด',340],['คอปกกระดุม 2 เม็ด',340]];
 const drinks=[['น้ำเย็น',10],['สปอนเซอร์ขวดเล็ก',15],['สปอนเซอร์ GO',20],['สปอนเซอร์ GO สูตรไม่มีน้ำตาล',20],['เป๊ปซี่กระป๋อง',17],['โค้กซีโร่',17],['โออิชิขวดเหลือง',17],['โออิชิขวดม่วง',17],['โออิชิขวดเขียว (สั่งล่วงหน้า)',17],['โออิชิเหลืองขวดเล็ก (สั่งล่วงหน้า)',12],['เครื่องดื่มชูกำลัง',12],['น้ำมะพร้าวเมจิกฟาร์ม',12],['แฟนต้าแดง (สั่งล่วงหน้า)',17],['สายรัดผมสีดำ',29],['สายรัดผมสีขาว/เทา',29],['ถุงเท้ากันลื่นสีขาว',45],['ถุงเท้ากันลื่นสีดำ',45],['ปลอกแขนกัปตันทีม',60],['กางเกงฟุตบอลไซส์ L',89],['กางเกงในไซส์ L คละสี',49],['ที่ปิดแผล/ปิดกันรองเท้ากัด (ชิ้น)',2]];
 const FIXTURE_ROWS=[
 ['c6','c4','18:32','18:52','2026-11-29',''],
-['c3','c2','18:53','19:13','2026-11-29',''],
-['c1','c8','19:14','19:34','2026-11-29',''],
-['c3','c6','19:35','19:55','2026-11-29',''],
-['c8','c2','19:56','20:16','2026-11-29',''],
-['c1','c4','20:17','20:37','2026-11-29',''],
-['c8','c5','20:38','20:58','2026-11-29',''],
-['c1','c3','20:59','21:19','2026-11-29',''],
-['c2','c7','21:20','21:40','2026-11-29',''],
-['c5','c7','21:40','22:00','2026-11-29',''],
-['c5','c4','18:32','18:52','2026-12-05',''],
-['c3','c8','18:53','19:13','2026-12-05',''],
-['c5','c6','19:14','19:34','2026-12-05',''],
-['c1','c2','19:35','19:55','2026-12-05',''],
-['c3','c5','19:56','20:16','2026-12-05',''],
-['c8','c6','20:17','20:37','2026-12-05',''],
-['c2','c4','20:38','20:58','2026-12-05',''],
-['c1','c7','20:59','21:19','2026-12-05',''],
-['c6','c7','21:20','21:40','2026-12-05',''],
-['c8','c4','18:32','18:52','2026-12-06',''],
-['c1','c6','18:53','19:13','2026-12-06',''],
-['c2','c5','19:14','19:34','2026-12-06',''],
-['c3','c4','19:35','19:55','2026-12-06',''],
-['c1','c5','19:56','20:16','2026-12-06',''],
-['c2','c6','20:17','20:37','2026-12-06',''],
-['c3','c7','21:00','21:20','2026-12-06',''],
-['c8','c7','21:20','21:40','2026-12-06',''],
-['c7','c4','21:40','22:00','2026-12-06','']
+['c3','c5','18:53','19:13','2026-11-29',''],
+['c2','c8','19:14','19:34','2026-11-29',''],
+['c4','c5','19:35','19:55','2026-11-29',''],
+['c3','c2','19:56','20:16','2026-11-29',''],
+['c1','c8','20:17','20:37','2026-11-29',''],
+['c6','c2','20:38','20:58','2026-11-29',''],
+['c3','c1','20:59','21:19','2026-11-29',''],
+['c6','c7','21:20','21:40','2026-11-29',''],
+['c1','c7','21:41','22:01','2026-11-29',''],
+['c6','c3','18:33','18:53','2026-12-05',''],
+['c4','c2','18:54','19:14','2026-12-05',''],
+['c3','c8','19:15','19:35','2026-12-05',''],
+['c4','c1','19:36','19:56','2026-12-05',''],
+['c8','c5','19:57','20:17','2026-12-05',''],
+['c6','c1','20:18','20:38','2026-12-05',''],
+['c4','c8','20:39','20:59','2026-12-05',''],
+['c2','c7','21:00','21:20','2026-12-05',''],
+['c5','c7','21:21','21:41','2026-12-05',''],
+['c6','c5','18:54','19:14','2026-12-06',''],
+['c2','c1','19:15','19:35','2026-12-06',''],
+['c6','c8','19:36','19:56','2026-12-06',''],
+['c2','c5','19:57','20:17','2026-12-06',''],
+['c4','c3','20:18','20:38','2026-12-06',''],
+['c1','c5','20:39','20:59','2026-12-06',''],
+['c4','c7','21:00','21:20','2026-12-06',''],
+['c3','c7','21:21','21:41','2026-12-06',''],
+['c8','c7','21:42','22:02','2026-12-06','']
 ];
 const pages=[['home','Home.png','หน้าแรก'],['standings','table.png','ตารางคะแนน'],['schedule','Pro.png','โปรแกรมการแข่งขัน'],['points','toppl.png','แมงโบ้งมันก้าย : TOP Players'],['teams','team.png','ทีม/สโมสรที่เข้าร่วม'],['honors','flag.png','เกียรติยศทีม'],['jersey','moner.png','สั่งทำเสื้อกับ MONER'],['fees','debt.png','ค่าสนาม'],['contact','pay.png','ติดต่อและชำระเงิน'],['inbox','ib.png','ข้อความเข้าส่วนตัว Admin']];
 let state;try{state=JSON.parse(localStorage.getItem('crucible3-state')||'{}')}catch{state={}};let user=null,isAdmin=false,cart={},scores=state.scores||{},drinkCart={};
 function seedState(){
  const oldTeams=Array.isArray(state.teams)?state.teams:[];
  state.teams=originalTeams.map(([id,name,logo])=>{const old=oldTeams.find(t=>t.id===id)||{};return {...old,id,name,logo,desc:old.desc||''}});
- const needsFixtureV8=!Array.isArray(state.fixtures)||state.fixtures.length!==FIXTURE_ROWS.length||Number(state.fixtureVersion||0)<8||state.fixtures.some((m,i)=>m.a!==FIXTURE_ROWS[i]?.[0]||m.b!==FIXTURE_ROWS[i]?.[1]||m.start!==FIXTURE_ROWS[i]?.[2]||m.end!==FIXTURE_ROWS[i]?.[3]||m.date!==FIXTURE_ROWS[i]?.[4]);
- if(needsFixtureV8){
-   if(Array.isArray(state.fixtures)&&state.fixtures.length){
+ const needsFixtureV9=!Array.isArray(state.fixtures)||state.fixtures.length!==FIXTURE_ROWS.length||Number(state.fixtureVersion||0)<9||state.fixtures.some((m,i)=>m.a!==FIXTURE_ROWS[i]?.[0]||m.b!==FIXTURE_ROWS[i]?.[1]||m.start!==FIXTURE_ROWS[i]?.[2]||m.end!==FIXTURE_ROWS[i]?.[3]||m.date!==FIXTURE_ROWS[i]?.[4]);
+ if(needsFixtureV9){
+   const oldFixtures=Array.isArray(state.fixtures)?state.fixtures:[];
+   const oldKey=(m)=>[m.date,m.a,m.b].join('|');
+   const oldIndexByKey=new Map(oldFixtures.map((m,i)=>[oldKey(m),i]));
+   const oldMaps={scoreDrafts:state.scoreDrafts||{},matchEvents:state.matchEvents||{},matchTitles:state.matchTitles||{},liveMatches:state.liveMatches||{},matchStatuses:state.matchStatuses||{},previousMatchEvents:state._previousMatchEvents||{}};
+   if(oldFixtures.length){
      state.previousFixtureArchives=Array.isArray(state.previousFixtureArchives)?state.previousFixtureArchives:[];
-     state.previousFixtureArchives.push({
-       archivedAt:new Date().toISOString(),fixtureVersion:Number(state.fixtureVersion||0),
-       fixtures:state.fixtures,scoreDrafts:state.scoreDrafts||{},matchEvents:state.matchEvents||{},
-       matchTitles:state.matchTitles||{},liveMatches:state.liveMatches||{},matchStatuses:state.matchStatuses||{}
-     });
+     state.previousFixtureArchives.push({archivedAt:new Date().toISOString(),fixtureVersion:Number(state.fixtureVersion||0),fixtures:JSON.parse(JSON.stringify(oldFixtures)),...JSON.parse(JSON.stringify(oldMaps))});
    }
-   state.fixtures=makeFixtures();state.scoreDrafts={};state.matchEvents={};state.matchTitles={};
-   state.liveMatches={};state.matchStatuses={};state._previousMatchEvents={};state.fixtureVersion=8;
+   const next=makeFixtures(), remapped={scoreDrafts:{},matchEvents:{},matchTitles:{},liveMatches:{},matchStatuses:{},previousMatchEvents:{}};
+   next.forEach((m,i)=>{const oi=oldIndexByKey.get(oldKey(m));if(oi===undefined)return;const prior=oldFixtures[oi]||{};next[i]={...m,...prior,a:m.a,b:m.b,start:m.start,end:m.end,date:m.date};for(const [from,to] of [['scoreDrafts','scoreDrafts'],['matchEvents','matchEvents'],['matchTitles','matchTitles'],['liveMatches','liveMatches'],['matchStatuses','matchStatuses'],['previousMatchEvents','previousMatchEvents']])if(Object.prototype.hasOwnProperty.call(oldMaps[from],oi))remapped[to][i]=oldMaps[from][oi];});
+   state.fixtures=next;state.scoreDrafts=remapped.scoreDrafts;state.matchEvents=remapped.matchEvents;state.matchTitles=remapped.matchTitles;state.liveMatches=remapped.liveMatches;state.matchStatuses=remapped.matchStatuses;state._previousMatchEvents=remapped.previousMatchEvents;state.fixtureVersion=9;
    try{localStorage.setItem('crucible3-state',JSON.stringify(state))}catch(e){console.warn('Fixture migration local save failed',e)}
  }
  state.scoreDrafts=state.scoreDrafts||{};state.matchEvents=state.matchEvents||{};state.matchTitles=state.matchTitles||{};state.liveMatches=state.liveMatches||{};
@@ -1306,7 +1307,7 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
 // Admin Authentication 
  const ADMIN_AUTH_UID = 'd5faa7e5-9bd4-40ce-87d5-8a1a63659f03';
  const ADMIN_AUTH_EMAIL = 'galactus.xc@gmail.com';
- const ADMIN_AUTH_PASS = '123456';
+ // Admin credentials are verified only by Supabase Auth; never embed passwords in this client.
 
  function getSupabaseAuthClient() {
   if (window.cloud && window.cloud.auth) return window.cloud;
@@ -1324,30 +1325,16 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
   const u = session?.user;
   if (!u) return false;
   const emailMatch = String(u.email || '').trim().toLowerCase() === ADMIN_AUTH_EMAIL.toLowerCase();
-  return emailMatch && (!u.id || u.id === ADMIN_AUTH_UID || u.id === 'local-admin');
+  return emailMatch && u.id === ADMIN_AUTH_UID;
  };
 
- function hasLocalAdminSession() {
-  try {
-   return sessionStorage.getItem('crucible3-admin') === '1' || localStorage.getItem('crucible3-admin-auth') === ADMIN_AUTH_EMAIL;
-  } catch (_) {
-   return false;
-  }
- }
+ function hasLocalAdminSession() { return false; }
 
  function applyAdminUI(ok, adminUser) {
   isAdmin = !!ok;
   window.isAdmin = !!ok;
   user = ok ? (adminUser || { id: ADMIN_AUTH_UID, email: ADMIN_AUTH_EMAIL, role: 'admin' }) : null;
-  try {
-   if (ok) {
-    sessionStorage.setItem('crucible3-admin', '1');
-    localStorage.setItem('crucible3-admin-auth', ADMIN_AUTH_EMAIL);
-   } else {
-    sessionStorage.removeItem('crucible3-admin');
-    localStorage.removeItem('crucible3-admin-auth');
-   }
-  } catch (_) {}
+  try { sessionStorage.removeItem('crucible3-admin'); localStorage.removeItem('crucible3-admin-auth'); } catch (_) {}
   document.body.classList.toggle('isadmin', !!ok);
   if (typeof render === 'function') render();
   if (typeof renderInbox === 'function') renderInbox();
@@ -1358,9 +1345,6 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
  function syncAdminState(session) {
   if (isAuthorizedAdminSession(session)) {
    return applyAdminUI(true, { id: session.user.id, email: session.user.email, role: 'admin' });
-  }
-  if (hasLocalAdminSession()) {
-   return applyAdminUI(true, { id: ADMIN_AUTH_UID, email: ADMIN_AUTH_EMAIL, role: 'admin' });
   }
   return applyAdminUI(false, null);
  }
@@ -1396,7 +1380,7 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
   if (err) err.textContent = '';
 
   try {
-   const isDirectAdminMatch = email.toLowerCase() === ADMIN_AUTH_EMAIL.toLowerCase() && password === ADMIN_AUTH_PASS;
+   const isDirectAdminMatch = false; // Supabase Auth only; no embedded password fallback.
    if (isDirectAdminMatch) {
     if (sb?.auth) {
      try { await sb.auth.signInWithPassword({ email: ADMIN_AUTH_EMAIL, password }); } catch (_) {}
@@ -1440,9 +1424,7 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
   toast('ออกจากระบบ Admin แล้ว');
  };
 
- if (hasLocalAdminSession()) {
-  applyAdminUI(true, { id: ADMIN_AUTH_UID, email: ADMIN_AUTH_EMAIL, role: 'admin' });
- }
+ applyAdminUI(false, null); // No browser-local Admin bypass.
 
  const sbInit = getSupabaseAuthClient();
  if (sbInit?.auth) {
@@ -1456,7 +1438,7 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
 
   sbInit.auth.onAuthStateChange((event, session) => {
    if (event === 'SIGNED_OUT') {
-    if (!hasLocalAdminSession()) applyAdminUI(false, null);
+    applyAdminUI(false, null);
     return;
    }
    const ok = syncAdminState(session);
@@ -1550,6 +1532,150 @@ if(cloud){loadCloud().finally(()=>{try{render()}catch(e){console.error('Cloud re
  };
  // Hide map/rules if they are embedded in home grid and refresh all requested displays.
  try{render();renderGlobalRanking();renderTeamPortal()}catch(e){console.warn('Requested patch render',e)}
+})();
+</script>
+
+
+<script>
+/* CRUCIBLE CUP: Supabase-only Admin, durable match results/events, status control and legacy club ranking. */
+(function(){
+ const $=id=>document.getElementById(id);
+ const ADMIN_UID='d5faa7e5-9bd4-40ce-87d5-8a1a63659f03';
+ const ADMIN_EMAIL='galactus.xc@gmail.com';
+ const escv=v=>typeof esc==='function'?esc(v):String(v??'');
+ const goalTypes=['goal','penalty','free_kick'];
+ const eventTypes=[
+  ['goal','ทำประตู','icongoal.webp'],['penalty','ทำประตูจากจุดโทษ','icongoalpen.webp'],
+  ['missed_penalty','พลาดจุดโทษ','iconmisspen.webp'],['own_goal','ทำเข้าประตูตัวเอง','icongoalog.webp'],
+  ['free_kick','ประตูจากฟรีคิก','icongoalfreekick.webp'],['assist','แอสซิสต์',''],
+  ['yellow','ใบเหลือง','iconyellow.webp'],['red','ใบแดง','iconred.webp'],['second_yellow','ใบเหลืองแดง','iconred.webp']
+ ];
+ const eventIcon=Object.fromEntries(eventTypes.map(x=>[x[0],x[2]]));
+ state.matchStatuses=state.matchStatuses||{};state.matchEvents=state.matchEvents||{};state.scoreDrafts=state.scoreDrafts||{};state._previousMatchEvents=state._previousMatchEvents||{};
+ for(let i=0;i<state.fixtures.length;i++)if(!state.matchStatuses[i])state.matchStatuses[i]='Upcoming';
+ state.historicalTeams=Array.isArray(state.historicalTeams)?state.historicalTeams:[
+  {id:'legacy_gangkui',name:'GANGKUI',logo:'images/Gangkui.png',seasonStatus:'ไม่ได้แข่งขันในซีซั่นนี้'},
+  {id:'legacy_allstar',name:'รวมดาว',logo:'images/allstar.png',seasonStatus:'ไม่ได้แข่งขันในซีซั่นนี้'}
+ ];
+ state.globalRanking=Array.isArray(state.globalRanking)?state.globalRanking:Array.from({length:10},()=>({team:'',reward:0}));
+ state.globalRanking=state.globalRanking.map(r=>({...r,reward:Number(r.reward??((Number(r.points)||0)*10))||0}));
+ const allRankingTeams=()=>[...(state.teams||[]),...(state.historicalTeams||[])];
+ const getRankTeam=id=>allRankingTeams().find(t=>t.id===id)||getTeam(id);
+ const adminSession=async()=>{
+  if(!cloud?.auth)return null;
+  const {data,error}=await cloud.auth.getUser();
+  if(error||!data?.user||data.user.id!==ADMIN_UID||String(data.user.email||'').toLowerCase()!==ADMIN_EMAIL)return null;
+  return data.user;
+ };
+ // Replace persistence with an authenticated Supabase write; localStorage is only an offline cache.
+ window.saveCloud=async function(){
+  if(!cloud)throw new Error('ไม่พบการเชื่อมต่อ Supabase');
+  const authUser=await adminSession();
+  if(!authUser)throw new Error('เซสชัน Admin ไม่ผ่าน Supabase Auth กรุณาเข้าสู่ระบบใหม่');
+  const pub={...state};delete pub.messages;
+  const {data,error}=await cloud.from('league_state').upsert({id:1,data:pub,updated_at:new Date().toISOString()},{onConflict:'id'}).select('id').maybeSingle();
+  if(error)throw error;if(!data)throw new Error('Supabase ไม่ยืนยันการบันทึกข้อมูล');
+  return data;
+ };
+ window.save= function(){
+  try{localStorage.setItem('crucible3-state',JSON.stringify(state))}catch(e){console.warn('Local cache:',e)}
+  if(typeof render==='function')render();
+  if(isAdmin)return window.saveCloud().catch(e=>{console.error('Supabase save failed',e);toast('บันทึกออนไลน์ไม่สำเร็จ: '+(e.message||'ตรวจสอบสิทธิ์ตาราง league_state'));return false});
+  return Promise.resolve(null);
+ };
+ window.loadCloud=async function(){
+  if(!cloud)return false;
+  const {data,error}=await cloud.from('league_state').select('data').eq('id',1).maybeSingle();
+  if(error){console.error('Supabase load failed',error);throw error;}
+  if(data?.data){const msgs=state.messages;state={...state,...data.data,messages:msgs};seedState();state.matchStatuses=state.matchStatuses||{};state.matchEvents=state.matchEvents||{};state.scoreDrafts=state.scoreDrafts||{};for(let i=0;i<state.fixtures.length;i++)if(!state.matchStatuses[i])state.matchStatuses[i]='Upcoming';}
+  if(isAdmin){const r=await cloud.from('league_inbox').select('id,type,name,message,submitted_at').order('submitted_at',{ascending:false});if(!r.error)state.messages=[...(r.data||[]).map(m=>({remoteId:m.id,type:m.type,name:m.name,text:m.message,time:new Date(m.submitted_at).toLocaleString('th-TH')})),...(state.messages||[]).filter(m=>!m.remoteId)];}
+  try{localStorage.setItem('crucible3-state',JSON.stringify(state))}catch(_){}
+  if(typeof render==='function')render();return true;
+ };
+ // Admin sign-in can only succeed through Supabase Auth with the allow-listed Auth UID.
+ window.login=async function(){
+  const err=$('loginError'),btn=$('adminLoginSubmit'),email=($('adminLoginEmail')?.value||'').trim(),password=$('adminLoginPassword')?.value||'';
+  if(!email||!password){if(err)err.textContent='กรุณากรอกอีเมลและรหัสผ่าน';return;}
+  if(btn){btn.disabled=true;btn.textContent='กำลังตรวจสอบ Supabase Auth...';}if(err)err.textContent='';
+  try{
+   if(!cloud?.auth)throw new Error('ไม่สามารถเชื่อมต่อ Supabase Auth ได้');
+   const {data,error}=await cloud.auth.signInWithPassword({email,password});
+   if(error)throw new Error('Supabase Auth ปฏิเสธการเข้าสู่ระบบ: '+error.message);
+   if(!data?.user||data.user.id!==ADMIN_UID||String(data.user.email||'').toLowerCase()!==ADMIN_EMAIL){await cloud.auth.signOut();throw new Error('บัญชีนี้ไม่มีสิทธิ์ Admin (UID ไม่ตรงกับบัญชีที่อนุญาต)');}
+   isAdmin=true;window.isAdmin=true;user=data.user;document.body.classList.add('isadmin');
+   closeModal();await window.loadCloud();render();toast('เข้าสู่ระบบ Admin ผ่าน Supabase Auth สำเร็จ');
+  }catch(e){isAdmin=false;window.isAdmin=false;user=null;document.body.classList.remove('isadmin');if(err)err.textContent=e.message||'เข้าสู่ระบบไม่สำเร็จ';console.error(e);}
+  finally{if(btn){btn.disabled=false;btn.textContent='เข้าสู่ระบบ Admin';}}
+ };
+ window.logout=async function(){try{if(cloud?.auth)await cloud.auth.signOut()}catch(e){console.warn(e)}isAdmin=false;window.isAdmin=false;user=null;document.body.classList.remove('isadmin');try{sessionStorage.removeItem('crucible3-admin');localStorage.removeItem('crucible3-admin-auth')}catch(_){}render();toast('ออกจากระบบ Admin แล้ว')};
+ // Verify any restored session with Supabase server before enabling Admin tools.
+ (async()=>{try{if(!cloud?.auth)return;const u=await adminSession();isAdmin=!!u;window.isAdmin=!!u;user=u||null;document.body.classList.toggle('isadmin',!!u);if(u)await window.loadCloud();render()}catch(e){console.warn('Supabase session verification:',e);isAdmin=false;window.isAdmin=false;user=null;document.body.classList.remove('isadmin');render()}})();
+ if(cloud?.auth)cloud.auth.onAuthStateChange((event)=>{if(event==='SIGNED_OUT'){isAdmin=false;window.isAdmin=false;user=null;document.body.classList.remove('isadmin');render()}else if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED'){setTimeout(async()=>{const u=await adminSession();isAdmin=!!u;window.isAdmin=!!u;user=u||null;document.body.classList.toggle('isadmin',!!u);if(u)await window.loadCloud();render()},0)}});
+ // Keep match event records empty until the Admin adds an event.
+ window.matchEvents=function(i){state.matchEvents=state.matchEvents||{};if(!Array.isArray(state.matchEvents[i]))state.matchEvents[i]=[];return state.matchEvents[i]};
+ window.setMatchStatus=async function(i,v){if(!isAdmin)return;state.matchStatuses[i]=['Upcoming','Live','Finished'].includes(v)?v:'Upcoming';try{await save()}catch(_){}renderSchedule();if(typeof renderHomeScorers==='function')renderHomeScorers()};
+ window.setScore=function(i,k,v){if(!isAdmin)return;state.scoreDrafts[i]=state.scoreDrafts[i]||{};if(v===''){state.scoreDrafts[i][k]=null;return;}const n=Number(v);if(!Number.isInteger(n)||n<0||n>99){toast('กรอกสกอร์เป็นจำนวนเต็ม 0–99');return;}state.scoreDrafts[i][k]=n;try{localStorage.setItem('crucible3-state',JSON.stringify(state))}catch(_){}};
+ window.confirmScore=async function(i){
+  if(!isAdmin)return;const m=state.fixtures[i],d=state.scoreDrafts[i]||{};if(!m)return toast('ไม่พบแมตช์');
+  const h=Object.prototype.hasOwnProperty.call(d,'homeScore')?d.homeScore:m.homeScore,a=Object.prototype.hasOwnProperty.call(d,'awayScore')?d.awayScore:m.awayScore;
+  if(h===null||a===null||h===undefined||a===undefined||!Number.isInteger(Number(h))||!Number.isInteger(Number(a))||Number(h)<0||Number(a)<0)return toast('กรอกสกอร์ Home และ Away ให้ครบ');
+  m.homeScore=Number(h);m.awayScore=Number(a);m.confirmed=true;delete state.scoreDrafts[i];
+  try{await window.saveCloud();localStorage.setItem('crucible3-state',JSON.stringify(state));renderSchedule();renderStandings();toast('บันทึกผลการแข่งขันลง Supabase สำเร็จ ทุกแพลตฟอร์มจะเห็นข้อมูลเดียวกัน')}catch(e){console.error(e);toast('บันทึกผลไม่สำเร็จ: '+(e.message||'ตรวจสอบ Supabase/RLS'));}
+ };
+ window.clearScore=async function(i){if(!isAdmin)return;const m=state.fixtures[i];if(!m)return;m.homeScore=null;m.awayScore=null;m.confirmed=false;delete state.scoreDrafts[i];try{await window.saveCloud();renderSchedule();renderStandings();toast('ล้างผลการแข่งขันใน Supabase แล้ว')}catch(e){toast('ล้างผลไม่สำเร็จ: '+e.message)}};
+ window.updateMatchEvent=function(i,j,k,v){if(!isAdmin)return;const e=matchEvents(i)[j];if(!e)return;if(k==='team')e.team=v;else e[k]=v;if(k==='type'&&!goalTypes.includes(v))e.count=1};
+ window.addMatchEvent=function(i){if(!isAdmin)return;matchEvents(i).push({type:'goal',name:'',team:schedule()[i].a,count:1});openMatchDetail(i)};
+ window.removeMatchEvent=function(i,j){if(!isAdmin)return;matchEvents(i).splice(j,1);openMatchDetail(i)};
+ window.eventRowHTML=function(i,j,e){
+  const m=schedule()[i],types=eventTypes.map(([v,l])=>`<option value="${v}" ${e.type===v?'selected':''}>${l}</option>`).join('');
+  const qty=goalTypes.includes(e.type)?`<label class="event-count-label">จำนวนประตู<select class="control" onchange="updateMatchEvent(${i},${j},'count',this.value)">${[1,2,3,4,5,6].map(n=>`<option value="${n}" ${Number(e.count||1)===n?'selected':''}>${n}</option>`).join('')}</select></label>`:'';
+  return `<div class="event-editor-row"><div class="field"><label>ประเภทเหตุการณ์</label><select class="control" onchange="updateMatchEvent(${i},${j},'type',this.value);openMatchDetail(${i})">${types}</select></div><div class="field"><label>ทีมที่เกิดเหตุการณ์</label><select class="control" onchange="updateMatchEvent(${i},${j},'team',this.value)"><option value="${m.a}" ${e.team===m.a?'selected':''}>Home · ${escv(getTeam(m.a).name)}</option><option value="${m.b}" ${e.team===m.b?'selected':''}>Away · ${escv(getTeam(m.b).name)}</option></select></div><div class="field"><label>ชื่อผู้เล่น</label><input class="control" value="${escv(e.name||'')}" placeholder="เช่น 18.เจมส์" oninput="updateMatchEvent(${i},${j},'name',this.value)"></div>${qty}<button class="btn sm" onclick="removeMatchEvent(${i},${j})">ลบเหตุการณ์</button></div>`;
+ };
+ window.openMatchDetail=function(i){if(!isAdmin)return;const m=schedule()[i],ev=matchEvents(i);$('matchDetail').innerHTML=`<div class="cardhead"><div><h2>เพิ่มผู้ทำประตู / เหตุการณ์</h2><p class="foot">คู่ที่ ${m.dayNo} · ${escv(getTeam(m.a).name)} พบ ${escv(getTeam(m.b).name)}</p></div><button class="btn" onclick="closeMatchDetail()">ปิด ×</button></div><div id="eventRows">${ev.map((e,j)=>eventRowHTML(i,j,e)).join('')}</div><div class="actions"><button class="btn" onclick="addMatchEvent(${i})">＋ เพิ่มผู้ทำประตู/เหตุการณ์</button><button class="btn primary" onclick="saveMatchEvents(${i})">บันทึกผู้ทำประตูและเหตุการณ์</button></div><p class="foot">Home = ทีมซ้าย · Away = ทีมขวา · จำนวน 1–6 ใช้เฉพาะเหตุการณ์ที่เป็นประตู</p>`;$('matchDetailBg').classList.add('open')};
+ window.saveMatchEvents=async function(i){
+  if(!isAdmin)return;const m=schedule()[i],events=matchEvents(i).filter(e=>String(e.name||'').trim());state.matchEvents[i]=events;
+  const hasPreviousSnapshot=Object.prototype.hasOwnProperty.call(state._previousMatchEvents,i),prev=state._previousMatchEvents[i]||[];
+  const tally=(list,teamId)=>list.reduce((sum,e)=>{const t=e.team===m.b?m.b:m.a;return sum+(goalTypes.includes(e.type)&&t===teamId?Math.max(1,Math.min(6,Number(e.count)||1)):0)},0);
+  const currentHomeGoals=tally(events,m.a),currentAwayGoals=tally(events,m.b);
+  if(hasPreviousSnapshot){const dh=currentHomeGoals-tally(prev,m.a),da=currentAwayGoals-tally(prev,m.b);m.homeScore=Math.max(0,(Number(m.homeScore)||0)+dh);m.awayScore=Math.max(0,(Number(m.awayScore)||0)+da)}
+  else if(m.homeScore===null&&m.awayScore===null&&(currentHomeGoals||currentAwayGoals)){m.homeScore=currentHomeGoals;m.awayScore=currentAwayGoals}
+  // If a score was manually entered before the first event list, keep it as the official score; do not double-count the scorer records.
+  events.forEach(e=>{e.name=String(e.name||'').trim();e.team=e.team===m.b?m.b:m.a;e.count=goalTypes.includes(e.type)?Math.max(1,Math.min(6,Number(e.count)||1)):1});
+  state._previousMatchEvents[i]=JSON.parse(JSON.stringify(events));
+  try{await window.saveCloud();localStorage.setItem('crucible3-state',JSON.stringify(state));closeMatchDetail();renderSchedule();renderStandings();if(typeof renderHomeScorers==='function')renderHomeScorers();toast('บันทึกผู้ทำประตูและเหตุการณ์ลง Supabase สำเร็จ')}catch(e){console.error(e);toast('บันทึกเหตุการณ์ไม่สำเร็จ: '+(e.message||'ตรวจสอบ Supabase/RLS'))}
+ };
+ window.renderMatchEvents=function(i){
+  const m=schedule()[i],ev=(state.matchEvents[i]||[]).filter(e=>String(e.name||'').trim()),sideHtml=(teamId,cls)=>{
+   const own=ev.filter(e=>(e.team===m.b?m.b:m.a)===teamId),goals=own.filter(e=>goalTypes.includes(e.type)),other=own.filter(e=>['missed_penalty','own_goal'].includes(e.type)),assists=own.filter(e=>e.type==='assist'),cards=own.filter(e=>['yellow','red','second_yellow'].includes(e.type));
+   const iconLine=e=>`<div class="match-event-line"><img class="event-icon-img" src="images/${eventIcon[e.type]}" alt="${e.type}"> <span>${escv(e.name)}</span>${Number(e.count)>1?` <small>×${Math.min(6,Number(e.count))}</small>`:''}</div>`;
+   return `<div class="match-event-side ${cls}">${goals.map(e=>`<div class="match-event-line"><span class="goal-icons">${Array.from({length:Math.max(1,Math.min(6,Number(e.count)||1))},()=>`<img class="event-icon-img" src="images/${eventIcon[e.type]}" alt="ประตู">`).join('')}</span><span>${escv(e.name)}</span></div>`).join('')}${other.map(iconLine).join('')}${assists.map(e=>`<div class="match-event-line"><em class="assist-name">${escv(e.name)} (A)</em></div>`).join('')}${cards.length?`<div class="match-event-cards">${cards.map(iconLine).join('')}</div>`:''}</div>`;
+  };return ev.length?`<div class="match-event-display">${sideHtml(m.a,'home')}${sideHtml(m.b,'away')}</div>`:'';
+ };
+ window.matchHTML=function(m){
+  const status=state.matchStatuses?.[m.i]||'Upcoming',isLive=status==='Live',finished=status==='Finished'||status==='Full Time',done=m.homeScore!==null&&m.awayScore!==null;
+  const date=({'2026-11-29':'อาทิตย์ 29 พ.ย.','2026-12-05':'เสาร์ 5 ธ.ค.','2026-12-06':'อาทิตย์ 6 ธ.ค.'})[m.date]||m.date;
+  const label=isLive?'• Live!':finished?'การแข่งขันจบแล้ว':'Upcoming...';
+  return `<div class="match ${isLive?'status-live':''}"><div class="matchtop"><span>คู่ที่ ${m.dayNo||m.i+1} · ${date} · ${timeFor(m)}</span><span class="match-status-area">${isAdmin?`<select class="match-status-select ${isLive?'live-select':''}" aria-label="สถานะแมตช์" onchange="setMatchStatus(${m.i},this.value)"><option value="Upcoming" ${status==='Upcoming'?'selected':''}>Upcoming...</option><option value="Live" ${isLive?'selected':''}>• Live!</option><option value="Finished" ${finished?'selected':''}>การแข่งขันจบแล้ว</option></select>`:`<b class="match-status-label ${isLive?'live-label':''}">${label}</b>`}</span></div><div class="versus"><div class="club">${crest(m.a)}<span>${escv(getTeam(m.a).name)}</span></div><div class="score">${done?m.homeScore+' : '+m.awayScore:'VS'}</div><div class="club"><span>${escv(getTeam(m.b).name)}</span>${crest(m.b)}</div></div>${renderMatchEvents(m.i)}${isAdmin?`<div class="actions match-admin-actions"><button class="btn sm" onclick="openMatchDetail(${m.i})">＋ เพิ่มผู้ทำประตู/เหตุการณ์</button><div class="score-edit-pair"><label>${escv(getTeam(m.a).name)}<input class="control" type="number" min="0" max="99" value="${state.scoreDrafts?.[m.i]?.homeScore??m.homeScore??''}" oninput="setScore(${m.i},'homeScore',this.value)"></label><b>:</b><label>${escv(getTeam(m.b).name)}<input class="control" type="number" min="0" max="99" value="${state.scoreDrafts?.[m.i]?.awayScore??m.awayScore??''}" oninput="setScore(${m.i},'awayScore',this.value)"></label></div><button class="btn primary sm" onclick="confirmScore(${m.i})">บันทึกผลการแข่งขัน</button><span class="pill">${m.confirmed?'บันทึกแล้ว':'ยังไม่บันทึก'}</span></div>`:''}</div>`;
+ };
+ window.renderSchedule=function(){const ms=schedule(),groups=[['2026-11-29','ตารางการแข่งขัน · วันอาทิตย์ที่ 29 พฤศจิกายน 2569 · 10 แมตช์',ms.filter(m=>m.date==='2026-11-29')],['2026-12-05','ตารางการแข่งขัน · วันเสาร์ที่ 5 ธันวาคม 2569 · 9 แมตช์',ms.filter(m=>m.date==='2026-12-05')],['2026-12-06','ตารางการแข่งขัน · วันอาทิตย์ที่ 6 ธันวาคม 2569 · 9 แมตช์',ms.filter(m=>m.date==='2026-12-06')]];$('scheduleList').innerHTML=groups.map(([d,title,list])=>`<section class="card sectiongap"><div class="cardhead"><h2>${title}</h2><span class="pill">${list.length} แมตช์</span></div>${list.map(matchHTML).join('')}</section>`).join('');$('homeMatches').innerHTML=ms.filter(m=>m.date==='2026-11-29').map(matchHTML).join('')+`<button class="btn sm" onclick="go('schedule')">ดูโปรแกรมทั้งหมด 28 แมตช์ →</button>`};
+ // Global ranking: score = total accumulated prize money / 10; final column is prize money, not trend.
+ window.setGlobalRank=async function(i,k,v){if(!isAdmin)return;state.globalRanking[i]=state.globalRanking[i]||{team:'',reward:0};if(k==='reward')state.globalRanking[i].reward=Math.max(0,Number(v)||0);else if(k==='team')state.globalRanking[i].team=v;try{await save()}catch(_){}renderGlobalRanking()};
+ window.renderGlobalRanking=function(){
+  const body=$('globalRankingRows');if(!body)return;const rows=state.globalRanking.map((r,i)=>({...r,_i:i})).sort((a,b)=>((Number(b.reward)||0)-(Number(a.reward)||0))||((a._i||0)-(b._i||0))).slice(0,10);
+  body.innerHTML=rows.map((r,rank)=>{const t=r.team?getRankTeam(r.team):null,reward=Number(r.reward)||0,points=reward/10;return `<tr><td><b>${rank+1}</b></td><td class="ranking-team-cell">${isAdmin?`<select class="control" onchange="setGlobalRank(${r._i},'team',this.value)"><option value="">เลือกทีม</option>${allRankingTeams().map(x=>`<option value="${x.id}" ${r.team===x.id?'selected':''}>${escv(x.name)}</option>`).join('')}</select>`:''}${t?`<span class="ranking-team-name"><img src="${escv(t.logo||'')}" alt=""><b>${escv(t.name)}</b></span>`:'—'}</td><td>${points.toLocaleString('en-US',{maximumFractionDigits:2})} คะแนน</td><td>${isAdmin?`<input class="control" type="number" min="0" step="1" value="${reward}" placeholder="เงินรางวัลสะสม" onchange="setGlobalRank(${r._i},'reward',this.value)">`:'฿'+reward.toLocaleString('en-US')}</td></tr>`}).join('');
+ };
+ function renderHistoricalTeams(){const honors=$('honors');if(!honors)return;let box=$('historicalTeamsCard');if(!box){box=document.createElement('section');box.id='historicalTeamsCard';box.className='card sectiongap';const ranking=$('globalLeagueRanking');honors.insertBefore(box,ranking||null);}box.innerHTML=`<div class="cardhead"><h2>ฐานข้อมูลทีม · สโมสรที่ไม่ได้แข่งขันในซีซั่นนี้</h2><span class="pill">HISTORICAL CLUBS</span></div><div class="historical-team-grid">${state.historicalTeams.map(t=>`<article class="historical-team"><img src="${escv(t.logo)}" alt="${escv(t.name)}"><div><b>${escv(t.name)}</b><p class="foot">${escv(t.seasonStatus||'ทีมในฐานข้อมูลเกียรติยศ')}</p></div></article>`).join('')}</div>`;}
+ // Replace the old trend column headings with accumulated prize money.
+ const rankBox=$('globalLeagueRanking');if(rankBox){const table=rankBox.querySelector('table');if(table)table.innerHTML=`<thead><tr><th>อันดับตลอดกาลทีมอันดับที่</th><th style="text-align:left">ชื่อทีมและโลโก้ทีม</th><th>คะแนนอันดับครูซิเบิลแรงกิ้ง</th><th>เงินรางวัลสะสม</th></tr></thead><tbody id="globalRankingRows"></tbody>`;const p=rankBox.querySelector('p');if(p)p.textContent='คะแนนอันดับครูซิเบิลแรงกิ้ง = เงินรางวัลสะสมรวมทั้งหมด ÷ 10';}
+ const style=document.createElement('style');style.textContent=`
+ .match.status-live{background:linear-gradient(112deg,#269FE8 0%,#5D27F0 100%);border:1px solid #ffffff70;border-radius:13px;padding:12px;margin:8px 0;color:#fff;box-shadow:0 8px 22px #3927a344}
+ .status-live .matchtop,.status-live .foot,.status-live .match-event-line small{color:#fff}
+ .match-status-area{display:flex;justify-content:flex-end;min-width:0}.match-status-select{max-width:190px;background:#2c2b45;color:#fff;border:1px solid #ffffff45;border-radius:9px;padding:6px 8px;font-weight:800;font-size:11px}.match-status-select.live-select{background:linear-gradient(110deg,#269FE8,#5D27F0);border-color:#fff}.match-status-label{font-size:11px;color:var(--muted)}.match-status-label.live-label{color:#fff;font-weight:900}
+ .match-admin-actions{justify-content:flex-start;margin-top:12px}.score-edit-pair{display:flex;align-items:end;gap:8px}.score-edit-pair label{display:grid;gap:4px;min-width:85px;font-size:10px;color:var(--muted)}.score-edit-pair input{width:75px!important}.event-editor-row{display:grid;grid-template-columns:1.2fr 1.2fr 1.2fr .7fr auto;gap:8px;align-items:end;padding:10px 0;border-bottom:1px solid #ffffff20}.event-count-label{display:grid;gap:5px;font-size:10px;color:var(--muted)}.event-count-label select{min-width:65px}.event-icon-img{width:20px;height:20px;object-fit:contain;vertical-align:middle}.goal-icons{display:inline-flex;gap:2px;align-items:center}.match-event-display{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}.match-event-side{min-width:0}.match-event-side.away{text-align:right}.match-event-side.away .match-event-line{justify-content:flex-end}.match-event-line{display:flex;align-items:center;gap:5px;min-height:24px;font-size:12px}.match-event-side .assist-name{color:#aaa;font-style:italic}.match-event-cards{margin-top:12px;padding-top:8px;border-top:1px solid #ffffff45}.ranking-team-cell{text-align:left!important;min-width:180px}.ranking-team-name{display:flex;align-items:center;gap:8px;justify-content:flex-start}.ranking-team-name img{width:34px;height:34px;object-fit:contain;flex:none}.ranking-team-name b{white-space:normal}.ranking-team-cell select{margin-bottom:6px;max-width:180px}.historical-team-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.historical-team{display:flex;align-items:center;gap:12px;border:1px solid #ffffff20;border-radius:13px;padding:12px;background:#ffffff08}.historical-team img{width:62px;height:62px;object-fit:contain}.historical-team p{margin:4px 0 0}
+ @media(max-width:640px){.event-editor-row{grid-template-columns:1fr 1fr}.event-editor-row .field:nth-child(3){grid-column:1/-1}.event-editor-row>button{grid-column:1/-1}.match-event-display{gap:6px}.match-event-line{font-size:10px}.match-admin-actions{align-items:stretch}.score-edit-pair{width:100%;justify-content:center}.score-edit-pair label{flex:1}.score-edit-pair input{width:100%!important}.historical-team-grid{grid-template-columns:1fr}}
+ `;document.head.appendChild(style);
+ const oldRender=window.render;window.render=function(){oldRender();renderGlobalRanking();renderHistoricalTeams()};
+ try{render();renderGlobalRanking();renderHistoricalTeams()}catch(e){console.warn('League patch render:',e)}
 })();
 </script>
 
